@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -14,8 +14,147 @@ generator client {
 model User {
   id             String @id @default(uuid())
   email          String  @unique
+  name           String
+  avatarImageUrl String
   hashedPassword      String
   salt                String
   resetToken          String?
   resetTokenExpiresAt DateTime?
+  stories             Story[]
+  storyOwners         StoryOwner[]
+  accounts            Account[]
+  accountMembers      AccountMember[]
+  projectMembers      ProjectMember[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Account {
+  id             String @id @default(uuid())
+  name           String
+  ownerId        String
+  owner          User @relation(fields: [ownerId], references: [id])
+  projects       Project[]
+  accountMembers AccountMember[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model AccountMember {
+  id             String @id @default(uuid())
+  accountId      String
+  account        Account @relation(fields: [accountId], references: [id])
+  memberId       String
+  member         User @relation(fields: [memberId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Project {
+  id             String @id @default(uuid())
+  name           String
+  privacy        ProjectPrivacy
+  description    String
+  accountId      String
+  account        Account @relation(fields: [accountId], references: [id])
+  stories        Story[]
+  projectMembers ProjectMember[]
+  currentVerocity Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ProjectMember {
+  id             String @id @default(uuid())
+  projectId      String
+  project        Project @relation(fields: [projectId], references: [id])
+  memberId       String
+  member         User @relation(fields: [memberId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Story {
+  id         String @id @default(uuid())
+  title      String
+  description       String?
+  state     StoryState?
+  points     Int?
+  requesterId   String?
+  requester     User?   @relation(fields: [requesterId], references: [id])
+  projectId   String?
+  project     Project?   @relation(fields: [projectId], references: [id])
+  storyOwners   StoryOwner[]
+  storyOrders   StoryOrder[]
+  storyLabels   StoryLabel[]
+  activities  StoryActivity[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model StoryOwner {
+  id         String @id @default(uuid())
+  storyId    String
+  story      Story   @relation(fields: [storyId], references: [id])
+  ownerId    String
+  owner      User   @relation(fields: [ownerId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model StoryOrder {
+  id         String @id @default(uuid())
+  storyId    String
+  story      Story   @relation(fields: [storyId], references: [id])
+  order      Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model StoryLabel {
+  id         String @id @default(uuid())
+  storyId    String
+  story      Story   @relation(fields: [storyId], references: [id])
+  labelId    String
+  label      Label   @relation(fields: [labelId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Label {
+  id         String @id @default(uuid())
+  name       String
+  color      String
+  stories    StoryLabel[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model StoryActivity {
+  id         String @id @default(uuid())
+  storyId    String
+  story     Story   @relation(fields: [storyId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum ProjectPrivacy {
+  PRIVATE
+  PUBLIC
+}
+
+enum StoryState {
+  UNSTARTED
+  STARTED
+  FINISHED
+  DELIVERED
+  REJECTED
+  ACCEPTED
+}
+
+enum StoryType {
+  FEATURE
+  BUG
+  CHORE
+  RELEASE
 }
