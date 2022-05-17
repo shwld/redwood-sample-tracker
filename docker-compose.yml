@@ -1,0 +1,10 @@
+version: '3'
+services:
+  postgres:
+    command: -c fsync=off # WSLでpsqlコマンドを利用するために必要
+    image: postgres:11
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432
