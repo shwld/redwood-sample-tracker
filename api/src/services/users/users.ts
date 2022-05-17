@@ -1,25 +1,5 @@
 import { db } from 'src/lib/db'
-import type {
-  QueryResolvers,
-  MutationResolvers,
-  UserResolvers,
-} from 'types/graphql'
-
-export const users: QueryResolvers['users'] = () => {
-  return db.user.findMany()
-}
-
-export const user: QueryResolvers['user'] = ({ id }) => {
-  return db.user.findUnique({
-    where: { id },
-  })
-}
-
-export const createUser: MutationResolvers['createUser'] = ({ input }) => {
-  return db.user.create({
-    data: input,
-  })
-}
+import type { MutationResolvers, UserResolvers } from 'types/graphql'
 
 export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {
   return db.user.update({

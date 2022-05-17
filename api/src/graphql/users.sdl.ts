@@ -4,10 +4,6 @@ export const schema = gql`
     email: String!
     name: String!
     avatarImageUrl: String!
-    hashedPassword: String!
-    salt: String!
-    resetToken: String
-    resetTokenExpiresAt: DateTime
     stories: [Story]!
     storyOwners: [StoryOwner]!
     accounts: [Account]!
@@ -17,33 +13,13 @@ export const schema = gql`
     updatedAt: DateTime!
   }
 
-  type Query {
-    users: [User!]! @requireAuth
-    user(id: String!): User @requireAuth
-  }
-
-  input CreateUserInput {
-    email: String!
-    name: String!
-    avatarImageUrl: String!
-    hashedPassword: String!
-    salt: String!
-    resetToken: String
-    resetTokenExpiresAt: DateTime
-  }
-
   input UpdateUserInput {
     email: String
     name: String
     avatarImageUrl: String
-    hashedPassword: String
-    salt: String
-    resetToken: String
-    resetTokenExpiresAt: DateTime
   }
 
   type Mutation {
-    createUser(input: CreateUserInput!): User! @requireAuth
     updateUser(id: String!, input: UpdateUserInput!): User! @requireAuth
     deleteUser(id: String!): User! @requireAuth
   }
