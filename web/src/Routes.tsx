@@ -13,6 +13,7 @@ import AccountsLayout from 'src/layouts/AccountsLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/home" page={HomePage} name="home" />
       <Set wrap={AccountsLayout}>
         <Route path="/accounts/new" page={AccountNewAccountPage} name="newAccount" />
         <Route path="/accounts/{id}/edit" page={AccountEditAccountPage} name="editAccount" />
