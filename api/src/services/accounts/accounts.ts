@@ -6,20 +6,32 @@ import type {
 } from 'types/graphql'
 
 export const accounts: QueryResolvers['accounts'] = () => {
-  return db.account.findMany()
+  const userId = context.currentUser.id
+  return db.user.findUnique({ where: { id: userId } }).accounts()
 }
 
 export const account: QueryResolvers['account'] = ({ id }) => {
-  return db.account.findUnique({
-    where: { id },
+  const userId = context.currentUser.id
+  return db.account.findFirst({
+    where: { id, members: { every: { id: userId } } },
   })
 }
 
 export const createAccount: MutationResolvers['createAccount'] = ({
   input,
 }) => {
+  const userId = context.currentUser.id
   return db.account.create({
-    data: input,
+    data: {
+      ...input,
+      members: {
+        connect: [
+          {
+            id: userId,
+          },
+        ],
+      },
+    },
   })
 }
 

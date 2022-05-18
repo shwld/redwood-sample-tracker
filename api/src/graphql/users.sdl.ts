@@ -4,16 +4,9 @@ export const schema = gql`
     email: String!
     name: String!
     avatarImageUrl: String!
-    requestedStories: [Story]!
-    stories: [OwnerOnStory]!
-    accounts: [MemberOnAccount]!
-    projects: [MemberOnProject]!
-    storyActivities: [StoryActivity]!
+    accounts: [Account]!
     createdAt: DateTime!
     updatedAt: DateTime!
-  }
-
-  type Query {
   }
 
   input UpdateUserInput {
