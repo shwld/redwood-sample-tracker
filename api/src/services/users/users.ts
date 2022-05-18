@@ -1,5 +1,9 @@
 import { db } from 'src/lib/db'
-import type { MutationResolvers, UserResolvers } from 'types/graphql'
+import type {
+  QueryResolvers,
+  MutationResolvers,
+  UserResolvers,
+} from 'types/graphql'
 
 export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {
   return db.user.update({
@@ -15,14 +19,14 @@ export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
 }
 
 export const User: UserResolvers = {
+  requestedStories: (_obj, { root }) =>
+    db.user.findUnique({ where: { id: root.id } }).requestedStories(),
   stories: (_obj, { root }) =>
     db.user.findUnique({ where: { id: root.id } }).stories(),
-  storyOwners: (_obj, { root }) =>
-    db.user.findUnique({ where: { id: root.id } }).storyOwners(),
   accounts: (_obj, { root }) =>
     db.user.findUnique({ where: { id: root.id } }).accounts(),
-  accountMembers: (_obj, { root }) =>
-    db.user.findUnique({ where: { id: root.id } }).accountMembers(),
-  projectMembers: (_obj, { root }) =>
-    db.user.findUnique({ where: { id: root.id } }).projectMembers(),
+  projects: (_obj, { root }) =>
+    db.user.findUnique({ where: { id: root.id } }).projects(),
+  storyActivities: (_obj, { root }) =>
+    db.user.findUnique({ where: { id: root.id } }).storyActivities(),
 }
