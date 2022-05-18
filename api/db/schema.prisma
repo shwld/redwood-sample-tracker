@@ -20,10 +20,9 @@ model User {
   salt                String
   resetToken          String?
   resetTokenExpiresAt DateTime?
-  requestedStories    Story[]
-  stories             OwnerOnStory[]
-  accounts            MemberOnAccount[]
-  projects            MemberOnProject[]
+  stories             Story[]
+  accounts            Account[]
+  projects            Project[]
   storyActivities     StoryActivity[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -33,19 +32,9 @@ model Account {
   id             String @id @default(uuid())
   name           String
   projects       Project[]
-  members        MemberOnAccount[]
+  members        User[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-}
-
-model MemberOnAccount {
-  accountId      String
-  account        Account @relation(fields: [accountId], references: [id])
-  memberId       String
-  member         User @relation(fields: [memberId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  @@id([memberId, accountId])
 }
 
 model Project {
@@ -56,20 +45,10 @@ model Project {
   accountId      String
   account        Account @relation(fields: [accountId], references: [id])
   stories        Story[]
-  members        MemberOnProject[]
+  members        User[]
   currentVerocity Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-}
-
-model MemberOnProject {
-  projectId      String
-  project        Project @relation(fields: [projectId], references: [id])
-  memberId       String
-  member         User @relation(fields: [memberId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  @@id([projectId, memberId])
 }
 
 model Story {
@@ -79,25 +58,14 @@ model Story {
   state     StoryState?
   points     Int?
   requesterId   String?
-  requester     User?   @relation(fields: [requesterId], references: [id])
   projectId   String?
   project     Project?   @relation(fields: [projectId], references: [id])
-  owners        OwnerOnStory[]
+  owners        User[]
   storyOrders   StoryOrder[]
-  labels        LabelOnStory[]
+  labels        Label[]
   activities  StoryActivity[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-}
-
-model OwnerOnStory {
-  storyId    String
-  story      Story   @relation(fields: [storyId], references: [id])
-  ownerId    String
-  owner      User   @relation(fields: [ownerId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  @@id([storyId, ownerId])
 }
 
 model StoryOrder {
@@ -109,21 +77,11 @@ model StoryOrder {
   @@id([storyId])
 }
 
-model LabelOnStory {
-  storyId    String
-  story      Story   @relation(fields: [storyId], references: [id])
-  labelId    String
-  label      Label   @relation(fields: [labelId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  @@id([storyId, labelId])
-}
-
 model Label {
   id         String @id @default(uuid())
   name       String
   color      String
-  stories    LabelOnStory[]
+  stories    Story[]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
