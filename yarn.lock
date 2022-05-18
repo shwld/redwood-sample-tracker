@@ -2189,6 +2189,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@chakra-ui/icons@npm:2.0.0"
+  dependencies:
+    "@chakra-ui/icon": 3.0.0
+    "@types/react": ^18.0.1
+  peerDependencies:
+    "@chakra-ui/system": ">=2.0.0-next.0"
+    react: ">=18"
+  checksum: 063328e0097035cbddeaccc8ebf0ebc778e40b1d50bad8dbed72fb70d6381d0ff3640495f5bd623657f5ef34eea3ec39205d12d2c01189cfca741fb0d010928e
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:2.0.0":
   version: 2.0.0
   resolution: "@chakra-ui/image@npm:2.0.0"
@@ -7196,7 +7209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*":
+"@types/react@npm:*, @types/react@npm:^18.0.1":
   version: 18.0.9
   resolution: "@types/react@npm:18.0.9"
   dependencies:
@@ -21179,6 +21192,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-icons@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "react-icons@npm:4.3.1"
+  peerDependencies:
+    react: "*"
+  checksum: 08ee89dcfd5f134631b1e8c322541c30c70119c0fada0f61ed1a1cb044c8c31d7144ae24586b14b548b79d0e1d0dc2210845156b4f2b7184c898f845c3203d79
+  languageName: node
+  linkType: hard
+
 "react-inspector@npm:^5.1.0":
   version: 5.1.1
   resolution: "react-inspector@npm:5.1.1"
@@ -22049,7 +22071,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@chakra-ui/icons": ^2.0.0
     "@redwoodjs/core": 1.4.1
+    react-icons: ^4.3.1
   languageName: unknown
   linkType: soft
 

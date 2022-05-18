@@ -9,21 +9,26 @@
 
 import { Set, Router, Route } from '@redwoodjs/router'
 import AccountsLayout from 'src/layouts/AccountsLayout'
+import MainLayout from './layouts/MainLayout/MainLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Route path="/home" page={HomePage} name="home" />
-      <Set wrap={AccountsLayout}>
-        <Route path="/accounts/new" page={AccountNewAccountPage} name="newAccount" />
-        <Route path="/accounts/{id}/edit" page={AccountEditAccountPage} name="editAccount" />
-        <Route path="/accounts/{id}" page={AccountAccountPage} name="account" />
-        <Route path="/accounts" page={AccountAccountsPage} name="accounts" />
-      </Set>
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/signup" page={SignupPage} name="signup" />
-      <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
-      <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
+      <Route path="/" page={HomePage} name="home" />
+      <Set wrap={MainLayout} unauthenticated="login">
+        <Route path="/stories" page={StoriesPage} name="stories" />
+        <Set wrap={AccountsLayout}>
+          <Route path="/accounts/new" page={AccountNewAccountPage} name="newAccount" />
+          <Route path="/accounts/{id}/edit" page={AccountEditAccountPage} name="editAccount" />
+          <Route path="/accounts/{id}" page={AccountAccountPage} name="account" />
+          <Route path="/accounts" page={AccountAccountsPage} name="accounts" />
+        </Set>
+
+        <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />
+        <Route path="/reset-password" page={ResetPasswordPage} name="resetPassword" />
+      </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
   )
