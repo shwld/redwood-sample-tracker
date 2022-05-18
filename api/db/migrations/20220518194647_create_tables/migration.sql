@@ -27,7 +27,6 @@ CREATE TABLE "User" (
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "ownerId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -35,14 +34,13 @@ CREATE TABLE "Account" (
 );
 
 -- CreateTable
-CREATE TABLE "AccountMember" (
-    "id" TEXT NOT NULL,
+CREATE TABLE "MemberOnAccount" (
     "accountId" TEXT NOT NULL,
     "memberId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "AccountMember_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MemberOnAccount_pkey" PRIMARY KEY ("memberId","accountId")
 );
 
 -- CreateTable
@@ -60,14 +58,13 @@ CREATE TABLE "Project" (
 );
 
 -- CreateTable
-CREATE TABLE "ProjectMember" (
-    "id" TEXT NOT NULL,
+CREATE TABLE "MemberOnProject" (
     "projectId" TEXT NOT NULL,
     "memberId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "ProjectMember_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MemberOnProject_pkey" PRIMARY KEY ("projectId","memberId")
 );
 
 -- CreateTable
@@ -86,36 +83,33 @@ CREATE TABLE "Story" (
 );
 
 -- CreateTable
-CREATE TABLE "StoryOwner" (
-    "id" TEXT NOT NULL,
+CREATE TABLE "OwnerOnStory" (
     "storyId" TEXT NOT NULL,
     "ownerId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "StoryOwner_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "OwnerOnStory_pkey" PRIMARY KEY ("storyId","ownerId")
 );
 
 -- CreateTable
 CREATE TABLE "StoryOrder" (
-    "id" TEXT NOT NULL,
     "storyId" TEXT NOT NULL,
     "order" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "StoryOrder_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "StoryOrder_pkey" PRIMARY KEY ("storyId")
 );
 
 -- CreateTable
-CREATE TABLE "StoryLabel" (
-    "id" TEXT NOT NULL,
+CREATE TABLE "LabelOnStory" (
     "storyId" TEXT NOT NULL,
     "labelId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "StoryLabel_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "LabelOnStory_pkey" PRIMARY KEY ("storyId","labelId")
 );
 
 -- CreateTable
@@ -133,6 +127,8 @@ CREATE TABLE "Label" (
 CREATE TABLE "StoryActivity" (
     "id" TEXT NOT NULL,
     "storyId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -143,22 +139,19 @@ CREATE TABLE "StoryActivity" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemberOnAccount" ADD CONSTRAINT "MemberOnAccount_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AccountMember" ADD CONSTRAINT "AccountMember_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "AccountMember" ADD CONSTRAINT "AccountMember_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemberOnAccount" ADD CONSTRAINT "MemberOnAccount_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_accountId_fkey" FOREIGN KEY ("accountId") REFERENCES "Account"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProjectMember" ADD CONSTRAINT "ProjectMember_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemberOnProject" ADD CONSTRAINT "MemberOnProject_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ProjectMember" ADD CONSTRAINT "ProjectMember_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MemberOnProject" ADD CONSTRAINT "MemberOnProject_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Story" ADD CONSTRAINT "Story_requesterId_fkey" FOREIGN KEY ("requesterId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -167,19 +160,22 @@ ALTER TABLE "Story" ADD CONSTRAINT "Story_requesterId_fkey" FOREIGN KEY ("reques
 ALTER TABLE "Story" ADD CONSTRAINT "Story_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoryOwner" ADD CONSTRAINT "StoryOwner_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OwnerOnStory" ADD CONSTRAINT "OwnerOnStory_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoryOwner" ADD CONSTRAINT "StoryOwner_storyId_fkey" FOREIGN KEY ("storyId") REFERENCES "Story"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OwnerOnStory" ADD CONSTRAINT "OwnerOnStory_storyId_fkey" FOREIGN KEY ("storyId") REFERENCES "Story"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StoryOrder" ADD CONSTRAINT "StoryOrder_storyId_fkey" FOREIGN KEY ("storyId") REFERENCES "Story"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoryLabel" ADD CONSTRAINT "StoryLabel_storyId_fkey" FOREIGN KEY ("storyId") REFERENCES "Story"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "LabelOnStory" ADD CONSTRAINT "LabelOnStory_storyId_fkey" FOREIGN KEY ("storyId") REFERENCES "Story"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "StoryLabel" ADD CONSTRAINT "StoryLabel_labelId_fkey" FOREIGN KEY ("labelId") REFERENCES "Label"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "LabelOnStory" ADD CONSTRAINT "LabelOnStory_labelId_fkey" FOREIGN KEY ("labelId") REFERENCES "Label"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StoryActivity" ADD CONSTRAINT "StoryActivity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "StoryActivity" ADD CONSTRAINT "StoryActivity_storyId_fkey" FOREIGN KEY ("storyId") REFERENCES "Story"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
