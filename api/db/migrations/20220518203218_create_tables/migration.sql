@@ -12,7 +12,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "avatarImageUrl" TEXT NOT NULL,
+    "avatarImageUrl" TEXT,
     "hashedPassword" TEXT NOT NULL,
     "salt" TEXT NOT NULL,
     "resetToken" TEXT,
