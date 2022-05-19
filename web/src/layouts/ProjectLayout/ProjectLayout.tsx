@@ -15,15 +15,16 @@ import {
   Stack,
   Link,
 } from '@chakra-ui/react'
-import { Link as RedwoodLink, routes } from '@redwoodjs/router'
+import { Link as RedwoodLink, routes, useParams } from '@redwoodjs/router'
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons'
 import { ReactNode } from 'react'
 
-type MainLayoutProps = {
+type ProjectLayoutProps = {
   children: React.ReactNode
 }
 
-const MainLayout = ({ children }: MainLayoutProps) => {
+const ProjectLayout = ({ children }: ProjectLayoutProps) => {
+  const { id } = useParams()
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -43,7 +44,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              <NavLink to={routes.stories()}>STORIES</NavLink>
+              <NavLink to={routes.stories({ id })}>STORIES</NavLink>
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
@@ -84,7 +85,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              <NavLink to={routes.stories()}>STORIES</NavLink>
+              <NavLink to={routes.stories({ id })}>STORIES</NavLink>
             </Stack>
           </Box>
         ) : null}
@@ -95,7 +96,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   )
 }
 
-export default MainLayout
+export default ProjectLayout
 
 const NavLink = ({ children, to }: { children: ReactNode; to: string }) => (
   <Link

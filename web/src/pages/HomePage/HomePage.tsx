@@ -38,7 +38,7 @@ const HomePage = () => {
             smart “Daily Agenda” every morning.
           </Text>
           <Stack spacing={6} direction={'row'}>
-            <Link to={routes.stories()}>Get started</Link>
+            <Link to={routes.projects()}>Get started</Link>
           </Stack>
           <Flex w={'full'}>
             <Illustration

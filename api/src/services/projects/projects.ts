@@ -6,20 +6,57 @@ import type {
 } from 'types/graphql'
 
 export const projects: QueryResolvers['projects'] = () => {
-  return db.project.findMany()
-}
-
-export const project: QueryResolvers['project'] = ({ id }) => {
-  return db.project.findUnique({
-    where: { id },
+  const userId = context.currentUser.id
+  return db.project.findMany({
+    where: {
+      members: {
+        every: {
+          id: userId,
+        },
+      },
+    },
   })
 }
 
-export const createProject: MutationResolvers['createProject'] = ({
+export const project: QueryResolvers['project'] = ({ id }) => {
+  const userId = context.currentUser.id
+  return db.project.findFirst({
+    where: {
+      id,
+      members: {
+        every: {
+          id: userId,
+        },
+      },
+    },
+  })
+}
+
+export const createProject: MutationResolvers['createProject'] = async ({
   input,
 }) => {
+  const { accountId, ...rest } = input
+  const userId = context.currentUser.id
+  const accountUser = await db.account
+    .findUnique({
+      where: {
+        id: accountId,
+      },
+    })
+    .members({ where: { id: userId } })
+  if (accountUser.length === 0) return null
   return db.project.create({
-    data: input,
+    data: {
+      ...rest,
+      account: {
+        connect: {
+          id: accountId,
+        },
+      },
+      members: {
+        connect: { id: userId },
+      },
+    },
   })
 }
 
@@ -42,8 +79,8 @@ export const deleteProject: MutationResolvers['deleteProject'] = ({ id }) => {
 export const Project: ProjectResolvers = {
   account: (_obj, { root }) =>
     db.project.findUnique({ where: { id: root.id } }).account(),
-  stories: (_obj, { root }) =>
-    db.project.findUnique({ where: { id: root.id } }).stories(),
+  // stories: (_obj, { root }) =>
+  //   db.project.findUnique({ where: { id: root.id } }).stories(),
   members: (_obj, { root }) =>
     db.project.findUnique({ where: { id: root.id } }).members(),
 }

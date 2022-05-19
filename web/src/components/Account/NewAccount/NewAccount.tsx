@@ -12,15 +12,18 @@ const CREATE_ACCOUNT_MUTATION = gql`
 `
 
 const NewAccount = () => {
-  const [createAccount, { loading, error }] = useMutation(CREATE_ACCOUNT_MUTATION, {
-    onCompleted: () => {
-      toast.success('Account created')
-      navigate(routes.accounts())
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  const [createAccount, { loading, error }] = useMutation(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted: () => {
+        toast.success('Account created')
+        navigate(routes.accounts())
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
 
   const onSave = (input) => {
     createAccount({ variables: { input } })

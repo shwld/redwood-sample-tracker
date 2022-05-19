@@ -1,7 +1,7 @@
-import NewProject from 'src/components/Project/NewProject'
+import NewProjectCell from 'src/components/Project/NewProjectCell'
 
 const NewProjectPage = () => {
-  return <NewProject />
+  return <NewProjectCell />
 }
 
 export default NewProjectPage

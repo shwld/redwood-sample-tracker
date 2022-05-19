@@ -7,29 +7,19 @@ import {
   RadioField,
   NumberField,
   Submit,
+  SelectField,
 } from '@redwoodjs/forms'
+import { VFC } from 'react'
+import type { Project } from 'types/graphql'
 
-
-
-const ProjectForm = (props) => {
+const ProjectForm: VFC<{
+  project?: Project
+  accounts: Array<{ id: string; name: string }>
+  error?: any
+  loading?: boolean
+  onSave(data: any, id?: string): void
+}> = (props) => {
   const onSubmit = (data) => {
-
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
     props.onSave(data, props?.project?.id)
   }
 
@@ -42,7 +32,7 @@ const ProjectForm = (props) => {
           titleClassName="rw-form-error-title"
           listClassName="rw-form-error-list"
         />
-      
+
         <Label
           name="name"
           className="rw-label"
@@ -50,15 +40,14 @@ const ProjectForm = (props) => {
         >
           Name
         </Label>
-        
-          <TextField
-            name="name"
-            defaultValue={props.project?.name}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <TextField
+          name="name"
+          defaultValue={props.project?.name}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
 
         <FieldError name="name" className="rw-field-error" />
 
@@ -69,9 +58,7 @@ const ProjectForm = (props) => {
         >
           Privacy
         </Label>
-        
-          
-          
+
         <div className="rw-check-radio-items">
           <RadioField
             id="project-privacy-0"
@@ -81,11 +68,9 @@ const ProjectForm = (props) => {
             className="rw-input"
             errorClassName="rw-input rw-input-error"
           />
-          <div>
-            Private
-          </div>
+          <div>Private</div>
         </div>
-          
+
         <div className="rw-check-radio-items">
           <RadioField
             id="project-privacy-1"
@@ -95,12 +80,8 @@ const ProjectForm = (props) => {
             className="rw-input"
             errorClassName="rw-input rw-input-error"
           />
-          <div>
-            Public
-          </div>
+          <div>Public</div>
         </div>
-          
-        
 
         <FieldError name="privacy" className="rw-field-error" />
 
@@ -111,15 +92,14 @@ const ProjectForm = (props) => {
         >
           Description
         </Label>
-        
-          <TextField
-            name="description"
-            defaultValue={props.project?.description}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <TextField
+          name="description"
+          defaultValue={props.project?.description}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
 
         <FieldError name="description" className="rw-field-error" />
 
@@ -130,15 +110,18 @@ const ProjectForm = (props) => {
         >
           Account id
         </Label>
-        
-          <TextField
-            name="accountId"
-            defaultValue={props.project?.accountId}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <SelectField
+          name="accountId"
+          defaultValue={props.project?.accountId}
+          placeholder="Account"
+        >
+          {props.accounts.map((account) => (
+            <option key={account.id} value={account.id}>
+              {account.name}
+            </option>
+          ))}
+        </SelectField>
 
         <FieldError name="accountId" className="rw-field-error" />
 
@@ -149,23 +132,19 @@ const ProjectForm = (props) => {
         >
           Current verocity
         </Label>
-        
-          <NumberField
-            name="currentVerocity"
-            defaultValue={props.project?.currentVerocity}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
-        
+
+        <NumberField
+          name="currentVerocity"
+          defaultValue={props.project?.currentVerocity}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
 
         <FieldError name="currentVerocity" className="rw-field-error" />
 
         <div className="rw-button-group">
-          <Submit
-            disabled={props.loading}
-            className="rw-button rw-button-blue"
-          >
+          <Submit disabled={props.loading} className="rw-button rw-button-blue">
             Save
           </Submit>
         </div>
