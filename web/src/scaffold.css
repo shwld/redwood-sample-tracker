@@ -225,9 +225,9 @@
 }
 .rw-label {
   display: block;
-  margin-top: 1.5rem;
   color: #4a5568;
   font-weight: 600;
+  font-size: 12px;
 }
 .rw-label.rw-label-error {
   color: #c53030;
@@ -236,7 +236,7 @@
   display: block;
   margin-top: 0.5rem;
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.3rem 0.5rem;
   border-width: 1px;
   border-style: solid;
   border-color: #e2e8f0;

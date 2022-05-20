@@ -12,7 +12,7 @@ export const QUERY = gql`
   query StoriesQuery($projectId: String!) {
     project(id: $projectId) {
       id
-      currentVerocity
+      currentVelocity
       stories {
         ...StoryFragment
       }
@@ -31,7 +31,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({ project }: CellSuccessProps<StoriesQuery>) => {
   return (
     <Stories
-      currentVelocity={project.currentVerocity}
+      currentVelocity={project.currentVelocity}
       stories={project.stories}
     />
   )
