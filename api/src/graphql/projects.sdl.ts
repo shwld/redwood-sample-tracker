@@ -10,6 +10,7 @@ export const schema = gql`
     currentVerocity: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
+    stories: [Story]!
   }
 
   enum ProjectPrivacy {

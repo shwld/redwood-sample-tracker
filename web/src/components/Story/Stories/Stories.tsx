@@ -1,6 +1,7 @@
 import { AddIcon } from '@chakra-ui/icons'
 import { Button, HStack, Icon } from '@chakra-ui/react'
-import Card, { Head } from 'src/components/Stories/components/Card/Card'
+import Card, { Head } from 'src/components/Story/components/Card/Card'
+import { StoryFragment } from 'types/graphql'
 
 const DoneCard: React.VFC = () => {
   return (
@@ -49,7 +50,10 @@ const IceboxCard: React.VFC = () => {
   )
 }
 
-const Stories = () => {
+const Stories: React.VFC<{
+  currentVelocity: number
+  stories: StoryFragment[]
+}> = ({ currentVelocity, stories }) => {
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">
       <DoneCard />

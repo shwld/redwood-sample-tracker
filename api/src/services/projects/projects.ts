@@ -79,8 +79,8 @@ export const deleteProject: MutationResolvers['deleteProject'] = ({ id }) => {
 export const Project: ProjectResolvers = {
   account: (_obj, { root }) =>
     db.project.findUnique({ where: { id: root.id } }).account(),
-  // stories: (_obj, { root }) =>
-  //   db.project.findUnique({ where: { id: root.id } }).stories(),
+  stories: (_obj, { root }) =>
+    db.project.findUnique({ where: { id: root.id } }).stories(),
   members: (_obj, { root }) =>
     db.project.findUnique({ where: { id: root.id } }).members(),
 }

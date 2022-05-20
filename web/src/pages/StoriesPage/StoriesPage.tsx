@@ -1,5 +1,5 @@
 import { MetaTags } from '@redwoodjs/web'
-import Stories from 'src/components/Stories/Stories'
+import Stories from 'src/components/Story/Stories'
 
 const StoriesPage = () => {
   return (

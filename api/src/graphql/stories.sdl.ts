@@ -4,6 +4,7 @@ export const schema = gql`
     title: String!
     description: String
     state: StoryState
+    type: StoryType
     points: Int
     requesterId: String
     projectId: String
@@ -33,6 +34,13 @@ export const schema = gql`
     DELIVERED
     REJECTED
     ACCEPTED
+  }
+
+  enum StoryType {
+    FEATURE
+    BUG
+    CHORE
+    RELEASE
   }
 
   type Query {
