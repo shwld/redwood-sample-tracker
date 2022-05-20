@@ -18,6 +18,14 @@ export const schema = gql`
     updatedAt: DateTime!
   }
 
+  type StoryOrder {
+    storyId: String!
+    story: Story!
+    order: Int!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
   enum StoryState {
     UNSTARTED
     STARTED
