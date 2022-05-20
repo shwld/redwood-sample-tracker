@@ -1,9 +1,9 @@
 import { AddIcon } from '@chakra-ui/icons'
-import { Button, Icon } from '@chakra-ui/react'
+import { Button, ButtonProps, Icon } from '@chakra-ui/react'
 
-const StoryAddButton: React.VFC = () => {
+const StoryAddButton: React.VFC<ButtonProps> = (props) => {
   return (
-    <Button variant="ghost" color="white" size="sm">
+    <Button variant="ghost" color="white" size="sm" {...props}>
       <Icon as={AddIcon} />
       Add story
     </Button>

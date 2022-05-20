@@ -1,7 +1,7 @@
-import { AddIcon } from '@chakra-ui/icons'
-import { Button, HStack, Icon } from '@chakra-ui/react'
+import { HStack } from '@chakra-ui/react'
 import Card, { Head } from 'src/components/Story/components/Card/Card'
 import { StoryFragment } from 'types/graphql'
+import StoryAddButton from '../components/StoryAddButton/StoryAddButton'
 
 const DoneCard: React.VFC = () => {
   return (
@@ -15,10 +15,7 @@ const CurrentCard: React.VFC = () => {
   return (
     <Card>
       <Head title="Current Iteration">
-        <Button variant="ghost" color="white" size="sm">
-          <Icon as={AddIcon} />
-          Add story
-        </Button>
+        <StoryAddButton />
       </Head>
     </Card>
   )
@@ -28,10 +25,7 @@ const BacklogCard: React.VFC = () => {
   return (
     <Card>
       <Head title="Backlog">
-        <Button variant="ghost" color="white" size="sm">
-          <Icon as={AddIcon} />
-          Add story
-        </Button>
+        <StoryAddButton />
       </Head>
     </Card>
   )
@@ -41,10 +35,7 @@ const IceboxCard: React.VFC = () => {
   return (
     <Card>
       <Head title="Icebox">
-        <Button variant="ghost" color="white" size="sm">
-          <Icon as={AddIcon} />
-          Add story
-        </Button>
+        <StoryAddButton />
       </Head>
     </Card>
   )
