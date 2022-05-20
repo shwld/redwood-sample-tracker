@@ -55,7 +55,8 @@ model Story {
   id         String @id @default(uuid())
   title      String
   description       String?
-  state     StoryState?
+  state      StoryState?
+  type       StoryType @default(FEATURE)
   points     Int?
   requesterId   String?
   projectId   String?
