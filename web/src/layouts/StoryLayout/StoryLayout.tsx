@@ -33,13 +33,7 @@ type StoryLayoutProps = {
 }
 
 const StoryLayout = ({ children }: StoryLayoutProps) => {
-  return (
-    <SimpleSidebar>
-      <HStack align="stretch" h="calc(100vh - 5rem)">
-        {children}
-      </HStack>
-    </SimpleSidebar>
-  )
+  return <SimpleSidebar>{children}</SimpleSidebar>
 }
 
 export default StoryLayout

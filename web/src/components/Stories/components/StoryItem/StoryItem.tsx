@@ -8,7 +8,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 
-export const StoryItem: React.VFC = () => {
+const StoryItem: React.VFC = () => {
   return (
     <ListItem borderBottom="1px" borderColor="gray.200" py={1} px={2}>
       <HStack justify="space-between">
@@ -23,3 +23,5 @@ export const StoryItem: React.VFC = () => {
     </ListItem>
   )
 }
+
+export default StoryItem
