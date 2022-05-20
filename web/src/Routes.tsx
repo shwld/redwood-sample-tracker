@@ -16,7 +16,7 @@ const Routes = () => {
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/signup" page={SignupPage} name="signup" />
       <Route path="/" page={HomePage} name="home" />
-      <Set unauthenticated="login">
+      <Set unauthenticated="/login">
         <Route path="/projects/new" page={ProjectNewProjectPage} name="newProject" />
         <Route path="/projects/{id}/edit" page={ProjectEditProjectPage} name="editProject" />
         <Route path="/projects/{id}" page={ProjectProjectPage} name="project" />
