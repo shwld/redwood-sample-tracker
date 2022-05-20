@@ -11,7 +11,7 @@ export const QUERY = gql`
       privacy
       description
       accountId
-      currentVerocity
+      currentVelocity
       createdAt
       updatedAt
     }

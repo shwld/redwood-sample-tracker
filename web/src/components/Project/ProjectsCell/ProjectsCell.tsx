@@ -13,7 +13,7 @@ export const QUERY = gql`
       privacy
       description
       accountId
-      currentVerocity
+      currentVelocity
       createdAt
       updatedAt
     }
@@ -26,10 +26,7 @@ export const Empty = () => {
   return (
     <div className="rw-text-center">
       {'No projects yet. '}
-      <Link
-        to={routes.newProject()}
-        className="rw-link"
-      >
+      <Link to={routes.newProject()} className="rw-link">
         {'Create one?'}
       </Link>
     </div>

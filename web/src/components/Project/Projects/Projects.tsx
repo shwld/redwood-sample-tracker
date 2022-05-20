@@ -98,7 +98,7 @@ const ProjectsList = ({ projects }) => {
               <td>{formatEnum(project.privacy)}</td>
               <td>{truncate(project.description)}</td>
               <td>{truncate(project.accountId)}</td>
-              <td>{truncate(project.currentVerocity)}</td>
+              <td>{truncate(project.currentVelocity)}</td>
               <td>{timeTag(project.createdAt)}</td>
               <td>{timeTag(project.updatedAt)}</td>
               <td>

@@ -7,7 +7,7 @@ export const standard = defineScenario<Prisma.ProjectCreateArgs>({
         name: 'String',
         privacy: 'PRIVATE',
         description: 'String',
-        currentVerocity: 1560438,
+        currentVelocity: 1560438,
         updatedAt: '2022-05-18T21:17:09Z',
         account: {
           create: { name: 'String', updatedAt: '2022-05-18T21:17:09Z' },
@@ -19,7 +19,7 @@ export const standard = defineScenario<Prisma.ProjectCreateArgs>({
         name: 'String',
         privacy: 'PRIVATE',
         description: 'String',
-        currentVerocity: 3988589,
+        currentVelocity: 3988589,
         updatedAt: '2022-05-18T21:17:09Z',
         account: {
           create: { name: 'String', updatedAt: '2022-05-18T21:17:09Z' },

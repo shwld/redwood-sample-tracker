@@ -126,7 +126,7 @@ const ProjectForm: VFC<{
         <FieldError name="accountId" className="rw-field-error" />
 
         <Label
-          name="currentVerocity"
+          name="currentVelocity"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
@@ -134,14 +134,14 @@ const ProjectForm: VFC<{
         </Label>
 
         <NumberField
-          name="currentVerocity"
-          defaultValue={props.project?.currentVerocity}
+          name="currentVelocity"
+          defaultValue={props.project?.currentVelocity}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
 
-        <FieldError name="currentVerocity" className="rw-field-error" />
+        <FieldError name="currentVelocity" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

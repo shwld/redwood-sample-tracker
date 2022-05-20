@@ -15,7 +15,7 @@ export const QUERY = gql`
       privacy
       description
       accountId
-      currentVerocity
+      currentVelocity
       createdAt
       updatedAt
     }
@@ -29,7 +29,7 @@ const UPDATE_PROJECT_MUTATION = gql`
       privacy
       description
       accountId
-      currentVerocity
+      currentVelocity
       createdAt
       updatedAt
     }
@@ -43,15 +43,18 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({ project }: CellSuccessProps<EditProjectById>) => {
-  const [updateProject, { loading, error }] = useMutation(UPDATE_PROJECT_MUTATION, {
-    onCompleted: () => {
-      toast.success('Project updated')
-      navigate(routes.projects())
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  const [updateProject, { loading, error }] = useMutation(
+    UPDATE_PROJECT_MUTATION,
+    {
+      onCompleted: () => {
+        toast.success('Project updated')
+        navigate(routes.projects())
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
 
   const onSave = (input, id) => {
     updateProject({ variables: { id, input } })
@@ -60,10 +63,17 @@ export const Success = ({ project }: CellSuccessProps<EditProjectById>) => {
   return (
     <div className="rw-segment">
       <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Project {project.id}</h2>
+        <h2 className="rw-heading rw-heading-secondary">
+          Edit Project {project.id}
+        </h2>
       </header>
       <div className="rw-segment-main">
-        <ProjectForm project={project} onSave={onSave} error={error} loading={loading} />
+        <ProjectForm
+          project={project}
+          onSave={onSave}
+          error={error}
+          loading={loading}
+        />
       </div>
     </div>
   )

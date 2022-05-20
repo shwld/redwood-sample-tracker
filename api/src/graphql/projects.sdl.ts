@@ -7,7 +7,7 @@ export const schema = gql`
     accountId: String!
     account: Account!
     members: [User]!
-    currentVerocity: Int!
+    currentVelocity: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
     stories: [Story]!
@@ -28,7 +28,7 @@ export const schema = gql`
     privacy: ProjectPrivacy!
     description: String!
     accountId: String!
-    currentVerocity: Int!
+    currentVelocity: Int!
   }
 
   input UpdateProjectInput {
@@ -36,7 +36,7 @@ export const schema = gql`
     privacy: ProjectPrivacy
     description: String
     accountId: String
-    currentVerocity: Int
+    currentVelocity: Int
   }
 
   type Mutation {

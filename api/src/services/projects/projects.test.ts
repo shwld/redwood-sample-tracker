@@ -33,7 +33,7 @@ describe('projects', () => {
         privacy: 'PRIVATE',
         description: 'String',
         accountId: scenario.project.two.accountId,
-        currentVerocity: 3481658,
+        currentVelocity: 3481658,
         updatedAt: '2022-05-18T21:17:09Z',
       },
     })
@@ -42,7 +42,7 @@ describe('projects', () => {
     expect(result.privacy).toEqual('PRIVATE')
     expect(result.description).toEqual('String')
     expect(result.accountId).toEqual(scenario.project.two.accountId)
-    expect(result.currentVerocity).toEqual(3481658)
+    expect(result.currentVelocity).toEqual(3481658)
     expect(result.updatedAt).toEqual('2022-05-18T21:17:09Z')
   })
 

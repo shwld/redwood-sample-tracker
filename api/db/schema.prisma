@@ -46,7 +46,7 @@ model Project {
   account        Account @relation(fields: [accountId], references: [id])
   stories        Story[]
   members        User[]
-  currentVerocity Int
+  currentVelocity Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }

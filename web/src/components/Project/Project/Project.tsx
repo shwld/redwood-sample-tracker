@@ -87,7 +87,7 @@ const Project = ({ project }) => {
               <td>{project.accountId}</td>
             </tr><tr>
               <th>Current verocity</th>
-              <td>{project.currentVerocity}</td>
+              <td>{project.currentVelocity}</td>
             </tr><tr>
               <th>Created at</th>
               <td>{timeTag(project.createdAt)}</td>
