@@ -6,7 +6,13 @@ const StoriesPage = () => {
     <>
       <MetaTags title="Stories" description="Stories page" />
 
-      <SimpleSidebar>hoge</SimpleSidebar>
+      <SimpleSidebar>
+        <HStack align="stretch" h="calc(100vh - 5rem)">
+          <Card />
+          <Card />
+          <Card />
+        </HStack>
+      </SimpleSidebar>
     </>
   )
 }
@@ -28,6 +34,8 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
+  VStack,
+  HStack,
 } from '@chakra-ui/react'
 import {
   FiHome,
@@ -39,6 +47,7 @@ import {
 } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { ReactText } from 'react'
+import Card from 'src/components/Story/components/Card/Card'
 
 interface LinkItemProps {
   name: string
@@ -55,7 +64,7 @@ const LinkItems: Array<LinkItemProps> = [
 function SimpleSidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}
@@ -97,12 +106,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-      </Flex>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon}>
           {link.name}
