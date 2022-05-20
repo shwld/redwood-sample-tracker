@@ -59,6 +59,8 @@ model Story {
   points     Int?
   requesterId   String?
   projectId   String?
+  releaseDate DateTime?
+  isIcebox    Boolean?
   project     Project?   @relation(fields: [projectId], references: [id])
   owners        User[]
   storyOrders   StoryOrder[]
