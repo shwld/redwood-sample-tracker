@@ -10,7 +10,7 @@ export const QUERY = gql`
       title
       description
       state
-      type
+      kind
       points
       requesterId
       projectId

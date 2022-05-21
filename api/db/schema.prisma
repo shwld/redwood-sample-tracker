@@ -56,7 +56,7 @@ model Story {
   title      String
   description       String?
   state      StoryState?
-  type       StoryType @default(FEATURE)
+  kind       StoryKind @default(FEATURE)
   points     Int?
   requesterId   String?
   projectId   String?
@@ -114,7 +114,7 @@ enum StoryState {
   ACCEPTED
 }
 
-enum StoryType {
+enum StoryKind {
   FEATURE
   BUG
   CHORE

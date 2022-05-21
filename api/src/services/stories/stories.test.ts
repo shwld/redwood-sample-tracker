@@ -28,7 +28,8 @@ describe('stories', () => {
 
   scenario('creates a story', async () => {
     const result = await createStory({
-      input: { title: 'String', updatedAt: '2022-05-20T20:38:49Z' },
+      projectId: 'project-1',
+      input: { title: 'String', type: 'FEATURE' },
     })
 
     expect(result.title).toEqual('String')

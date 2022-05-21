@@ -4,7 +4,7 @@ export const schema = gql`
     title: String!
     description: String
     state: StoryState
-    type: StoryType
+    type: StoryKind
     points: Int
     requesterId: String
     projectId: String
@@ -36,7 +36,7 @@ export const schema = gql`
     ACCEPTED
   }
 
-  enum StoryType {
+  enum StoryKind {
     FEATURE
     BUG
     CHORE
@@ -50,6 +50,7 @@ export const schema = gql`
 
   input StoryInput {
     title: String!
+    kind: StoryKind!
     description: String
     state: StoryState
     points: Int
@@ -59,8 +60,11 @@ export const schema = gql`
   }
 
   type Mutation {
-    createStory(projectId: String!, index: Int!, input: StoryInput!): Story!
-      @requireAuth
+    createStory(
+      projectId: String!
+      orderPriority: Int
+      input: StoryInput!
+    ): Story! @requireAuth
     updateStory(id: String!, input: StoryInput!): Story! @requireAuth
     deleteStory(id: String!): Story! @requireAuth
   }

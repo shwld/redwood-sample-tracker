@@ -1,12 +1,14 @@
+import { useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import Stories from 'src/components/Story/Stories'
+import StoriesCell from 'src/components/Story/StoriesCell'
 
 const StoriesPage = () => {
+  const projectId = useParams().id
   return (
     <>
       <MetaTags title="Stories" description="Stories page" />
 
-      <Stories />
+      <StoriesCell projectId={projectId} />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, HStack, VStack } from '@chakra-ui/react'
+import { Box, Button, HStack, VStack } from '@chakra-ui/react'
 import {
   Form,
   FormError,
@@ -25,6 +25,7 @@ const StoryForm: VFC<{
   loading: boolean
   error: any
   onSave(input: StoryInput, id?: string): void
+  onCancel?(): void
 }> = (props) => {
   const onSubmit = (data) => {
     if (data.state === '') {
@@ -56,7 +57,8 @@ const StoryForm: VFC<{
           <FieldError name="title" className="rw-field-error" />
         </VStack>
 
-        <HStack justify="flex-end" my={2}>
+        <HStack justify="flex-end" my={2} gap={2}>
+          {props.onCancel && <Button onClick={props.onCancel}>Cancel</Button>}
           <Submit disabled={props.loading} className="rw-button rw-button-blue">
             Save
           </Submit>
@@ -93,7 +95,7 @@ const StoryForm: VFC<{
         <VStack align="stretch" rounded="md" bg="white" mt={3} py={1} gap={2}>
           <HStack justify="space-between" align="center" px={3}>
             <Label
-              name="type"
+              name="kind"
               className="rw-label"
               errorClassName="rw-label rw-label-error"
             >
@@ -101,7 +103,7 @@ const StoryForm: VFC<{
             </Label>
             <SelectField
               id="story-type-0"
-              name="type"
+              name="kind"
               defaultValue="FEATURE"
               defaultChecked={props.story?.type?.includes('FEATURE')}
               className="rw-input"
@@ -113,7 +115,7 @@ const StoryForm: VFC<{
               <option value="RELEASE">Release</option>
             </SelectField>
           </HStack>
-          <FieldError name="type" className="rw-field-error" />
+          <FieldError name="kind" className="rw-field-error" />
 
           <HStack justify="space-between" align="center" px={3}>
             <Label

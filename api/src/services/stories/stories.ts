@@ -17,13 +17,19 @@ export const story: QueryResolvers['story'] = ({ id }) => {
 
 export const createStory: MutationResolvers['createStory'] = async ({
   projectId,
-  index,
+  orderPriority,
   input,
 }) => {
   const project = await db.user
     .findUnique({ where: { id: context.currentUser.id } })
     .projects({ where: { id: projectId } })
   if (project == null) return
+  const storiesCount = db.story.aggregate({
+    where: {
+      projectId,
+    },
+    _count: true,
+  })
 
   return db.story.create({
     data: {
@@ -33,9 +39,10 @@ export const createStory: MutationResolvers['createStory'] = async ({
           id: projectId,
         },
       },
-      storyOrders: {
+      storyOrderPriorities: {
         create: {
-          order: index,
+          priority:
+            orderPriority == null ? (await storiesCount)._count : orderPriority,
         },
       },
     },

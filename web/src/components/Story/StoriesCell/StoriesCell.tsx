@@ -8,6 +8,8 @@ export const QUERY = gql`
     type
     title
     state
+    isIcebox
+    points
   }
   query StoriesQuery($projectId: String!) {
     project(id: $projectId) {
@@ -33,6 +35,7 @@ export const Success = ({ project }: CellSuccessProps<StoriesQuery>) => {
     <Stories
       currentVelocity={project.currentVelocity}
       stories={project.stories}
+      projectId={project.id}
     />
   )
 }
