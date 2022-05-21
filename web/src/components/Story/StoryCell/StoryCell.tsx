@@ -1,7 +1,6 @@
 import type { FindStoryById } from 'types/graphql'
 import { CellSuccessProps, CellFailureProps, useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
-import { navigate, routes } from '@redwoodjs/router'
 import StoryForm from 'src/components/Story/components/StoryForm/StoryForm'
 
 export const QUERY = gql`
@@ -49,6 +48,7 @@ const DELETE_STORY_MUTATION = gql`
   mutation DeleteStoryMutation($id: String!) {
     deleteStory(id: $id) {
       id
+      isDeleted
     }
   }
 `
@@ -73,18 +73,33 @@ export const Success = ({
       toast.error(error.message)
     },
   })
+  const [deleteStory, deleteResult] = useMutation(DELETE_STORY_MUTATION, {
+    onCompleted: () => {
+      toast.success('Story deleted')
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
 
   const onSave = (input, id) => {
     updateStory({ variables: { id, input } })
     onClose && onClose()
   }
+  const onDelete = () => {
+    if (confirm('Delete story?')) {
+      deleteStory({ variables: { id: story.id } })
+      onClose && onClose()
+    }
+  }
   return (
     <StoryForm
       story={story}
       onSave={onSave}
-      loading={loading}
-      error={error}
+      loading={loading || deleteResult.loading}
+      error={error ?? deleteResult.error}
       onClose={onClose}
+      onDelete={onDelete}
     />
   )
 }

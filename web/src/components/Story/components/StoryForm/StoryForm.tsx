@@ -1,5 +1,13 @@
-import { VscChevronUp } from 'react-icons/vsc'
-import { Box, Button, HStack, IconButton, VStack } from '@chakra-ui/react'
+import { VscChevronUp, VscTrash } from 'react-icons/vsc'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  HStack,
+  Icon,
+  IconButton,
+  VStack,
+} from '@chakra-ui/react'
 import {
   Form,
   FormError,
@@ -28,6 +36,7 @@ const StoryForm: VFC<{
   onSave(input: StoryInput, id?: string): void
   onCancel?(): void
   onClose?(): void
+  onDelete?(): void
 }> = (props) => {
   const onSubmit = (data) => {
     if (data.state === '') {
@@ -69,11 +78,27 @@ const StoryForm: VFC<{
           <FieldError name="title" className="rw-field-error" />
         </VStack>
 
-        <HStack justify="flex-end" my={2} gap={2}>
-          {props.onCancel && <Button onClick={props.onCancel}>Cancel</Button>}
-          <Submit disabled={props.loading} className="rw-button rw-button-blue">
-            Save
-          </Submit>
+        <HStack justify="space-between" w="full" my={2} gap={2}>
+          <ButtonGroup size="sm" isAttached variant="outline">
+            {props.onDelete && (
+              <IconButton
+                aria-label="Delete"
+                colorScheme="red"
+                icon={<Icon as={VscTrash} />}
+                onClick={props.onDelete}
+              />
+            )}
+          </ButtonGroup>
+
+          <HStack justify="flex-end">
+            {props.onCancel && <Button onClick={props.onCancel}>Cancel</Button>}
+            <Submit
+              disabled={props.loading}
+              className="rw-button rw-button-blue"
+            >
+              Save
+            </Submit>
+          </HStack>
         </HStack>
 
         <VStack align="stretch" rounded="md" bg="white" mt={3} py={1} gap={2}>

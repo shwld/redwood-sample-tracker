@@ -133,8 +133,12 @@ const Stories: React.VFC<{
   currentVelocity: number
   stories: StoryFragment[]
 }> = ({ projectId, currentVelocity, stories }) => {
-  const backlogStories = stories.filter((it) => it.isIcebox === false)
-  const iceboxStories = stories.filter((it) => it.isIcebox === true)
+  const backlogStories = stories.filter(
+    (it) => it.isIcebox === false && !it.isDeleted
+  )
+  const iceboxStories = stories.filter(
+    (it) => it.isIcebox === true && !it.isDeleted
+  )
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">
       <DoneCard projectId={projectId} />

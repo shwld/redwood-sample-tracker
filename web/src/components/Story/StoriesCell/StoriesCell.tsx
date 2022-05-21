@@ -10,6 +10,7 @@ export const QUERY = gql`
     state
     isIcebox
     points
+    isDeleted
   }
   query StoriesQuery($projectId: String!) {
     project(id: $projectId) {

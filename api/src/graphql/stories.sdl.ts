@@ -17,6 +17,8 @@ export const schema = gql`
     activities: [StoryActivity]!
     createdAt: DateTime!
     updatedAt: DateTime!
+
+    isDeleted: Boolean
   }
 
   type StoryOrderPriority {

@@ -15,6 +15,21 @@ export const story: QueryResolvers['story'] = ({ id }) => {
   })
 }
 
+async function findStory(id: string) {
+  return db.story.findFirst({
+    where: {
+      id,
+      project: {
+        members: {
+          some: {
+            id: context.currentUser.id,
+          },
+        },
+      },
+    },
+  })
+}
+
 export const createStory: MutationResolvers['createStory'] = async ({
   projectId,
   orderPriority,
@@ -53,16 +68,32 @@ export const updateStory: MutationResolvers['updateStory'] = ({
   id,
   input,
 }) => {
+  const story = findStory(id)
+  if (story == null) return
+
   return db.story.update({
     data: input,
     where: { id },
   })
 }
 
-export const deleteStory: MutationResolvers['deleteStory'] = ({ id }) => {
-  return db.story.delete({
-    where: { id },
-  })
+export const deleteStory: MutationResolvers['deleteStory'] = async ({ id }) => {
+  const story = await findStory(id)
+  if (story == null) return
+
+  await db.$transaction([
+    db.storyOrderPriority.delete({
+      where: { storyId: id },
+    }),
+    db.story.delete({
+      where: { id },
+    }),
+  ])
+
+  return {
+    ...story,
+    isDeleted: true,
+  }
 }
 
 export const Story: StoryResolvers = {
