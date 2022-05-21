@@ -129,9 +129,23 @@ const Stories: React.VFC<{
   currentVelocity: number
   stories: StoryFragment[]
 }> = ({ projectId, currentVelocity, stories }) => {
-  const backlogStories = stories.filter(
+  const currentStories = []
+  const backlogStories = []
+  const activeStories = stories.filter(
     (it) => it.isIcebox === false && !it.isDeleted
   )
+
+  activeStories.reduce((sum, story) => {
+    const storyPoint = story.points ?? 0
+    const newSum = storyPoint + sum
+    if (newSum <= currentVelocity) {
+      currentStories.push(story)
+    } else {
+      backlogStories.push(story)
+    }
+
+    return newSum
+  }, 0)
   const iceboxStories = stories.filter(
     (it) => it.isIcebox === true && !it.isDeleted
   )
@@ -139,7 +153,7 @@ const Stories: React.VFC<{
     <HStack align="stretch" h="calc(100vh - 5rem)">
       <DoneCard projectId={projectId} />
       <CurrentCard projectId={projectId} currentVelocity={currentVelocity}>
-        {backlogStories.map((story) => (
+        {currentStories.map((story) => (
           <Story key={story.id} story={story} />
         ))}
       </CurrentCard>
