@@ -14,7 +14,7 @@ export const QUERY = gql`
     requesterId
     projectId
     releaseDate
-    isIcebox
+    position
     createdAt
     updatedAt
   }
@@ -37,7 +37,7 @@ const UPDATE_STORY_MUTATION = gql`
       requesterId
       projectId
       releaseDate
-      isIcebox
+      position
       createdAt
       updatedAt
     }

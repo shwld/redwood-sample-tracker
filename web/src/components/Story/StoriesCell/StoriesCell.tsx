@@ -8,7 +8,7 @@ export const QUERY = gql`
     kind
     title
     state
-    isIcebox
+    position
     points
     isDeleted
   }

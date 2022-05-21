@@ -51,7 +51,7 @@ const CurrentCard: React.VFC<{
       </Head>
       {formOpened && (
         <NewStory
-          isIcebox={false}
+          position="CURRENT"
           projectId={projectId}
           onCancel={closeForm}
           onComplete={closeForm}
@@ -74,7 +74,7 @@ const BacklogCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
       </Head>
       {formOpened && (
         <NewStory
-          isIcebox={false}
+          position="BACKLOG"
           projectId={projectId}
           onCancel={closeForm}
           onComplete={closeForm}
@@ -97,7 +97,7 @@ const IceboxCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
       </Head>
       {formOpened && (
         <NewStory
-          isIcebox
+          position="ICEBOX"
           projectId={projectId}
           onCancel={closeForm}
           onComplete={closeForm}
@@ -129,25 +129,15 @@ const Stories: React.VFC<{
   currentVelocity: number
   stories: StoryFragment[]
 }> = ({ projectId, currentVelocity, stories }) => {
-  const currentStories = []
-  const backlogStories = []
-  const activeStories = stories.filter(
-    (it) => it.isIcebox === false && !it.isDeleted
+  const currentStories = stories.filter(
+    (it) => it.position === 'CURRENT' && !it.isDeleted
+  )
+  const backlogStories = stories.filter(
+    (it) => it.position === 'BACKLOG' && !it.isDeleted
   )
 
-  activeStories.reduce((sum, story) => {
-    const storyPoint = story.points ?? 0
-    const newSum = storyPoint + sum
-    if (newSum <= currentVelocity) {
-      currentStories.push(story)
-    } else {
-      backlogStories.push(story)
-    }
-
-    return newSum
-  }, 0)
   const iceboxStories = stories.filter(
-    (it) => it.isIcebox === true && !it.isDeleted
+    (it) => it.position === 'ICEBOX' && !it.isDeleted
   )
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">

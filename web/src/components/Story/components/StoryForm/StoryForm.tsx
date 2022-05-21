@@ -233,7 +233,7 @@ const StoryForm: VFC<{
           <FieldError name="description" className="rw-field-error" />
         </VStack>
         <FieldError name="projectId" className="rw-field-error" />
-        <FieldError name="isIcebox" className="rw-field-error" />
+        <FieldError name="position" className="rw-field-error" />
       </Form>
     </Box>
   )

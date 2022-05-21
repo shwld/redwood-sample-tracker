@@ -7,6 +7,7 @@ import {
   StoriesQuery,
   StoriesQueryVariables,
   StoryInput,
+  StoryPosition,
 } from 'types/graphql'
 import { QUERY } from '../../StoriesCell'
 
@@ -21,7 +22,7 @@ const CREATE_STORY_MUTATION = gql`
     requesterId
     projectId
     releaseDate
-    isIcebox
+    position
     createdAt
     updatedAt
   }
@@ -42,11 +43,11 @@ const CREATE_STORY_MUTATION = gql`
 
 const NewStory: React.VFC<{
   projectId: string
-  isIcebox?: boolean
+  position?: StoryPosition
   orderPriority?: number
   onCancel?(): void
   onComplete?(): void
-}> = ({ projectId, isIcebox, orderPriority, onCancel, onComplete }) => {
+}> = ({ projectId, position, orderPriority, onCancel, onComplete }) => {
   const [createStory, { loading, error }] = useMutation<
     CreateStoryMutation,
     CreateStoryMutationVariables
@@ -86,7 +87,7 @@ const NewStory: React.VFC<{
       variables: {
         input: {
           ...input,
-          isIcebox,
+          position,
         },
         projectId,
         orderPriority,

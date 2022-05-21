@@ -9,7 +9,7 @@ export const schema = gql`
     requesterId: String
     projectId: String
     releaseDate: DateTime
-    isIcebox: Boolean
+    position: StoryPosition
     project: Project
     owners: [User]!
     storyOrderPriority: StoryOrderPriority
@@ -27,6 +27,13 @@ export const schema = gql`
     priority: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
+  }
+
+  enum StoryPosition {
+    DONE
+    CURRENT
+    BACKLOG
+    ICEBOX
   }
 
   enum StoryState {
@@ -58,7 +65,7 @@ export const schema = gql`
     points: Int
     requesterId: String
     releaseDate: DateTime
-    isIcebox: Boolean
+    position: StoryPosition
   }
 
   type Mutation {

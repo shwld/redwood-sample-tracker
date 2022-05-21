@@ -61,7 +61,7 @@ model Story {
   requesterId   String?
   projectId   String?
   releaseDate DateTime?
-  isIcebox    Boolean?
+  position    StoryPosition @default(ICEBOX)
   project     Project?   @relation(fields: [projectId], references: [id])
   owners        User[]
   storyOrderPriority   StoryOrderPriority?
@@ -103,6 +103,13 @@ model StoryActivity {
 enum ProjectPrivacy {
   PRIVATE
   PUBLIC
+}
+
+enum StoryPosition {
+  DONE
+  CURRENT
+  BACKLOG
+  ICEBOX
 }
 
 enum StoryState {
