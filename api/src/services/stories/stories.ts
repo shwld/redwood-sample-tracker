@@ -39,7 +39,7 @@ export const createStory: MutationResolvers['createStory'] = async ({
           id: projectId,
         },
       },
-      storyOrderPriorities: {
+      storyOrderPriority: {
         create: {
           priority:
             orderPriority == null ? (await storiesCount)._count : orderPriority,

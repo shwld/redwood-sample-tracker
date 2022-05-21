@@ -4,7 +4,7 @@ export const schema = gql`
     title: String!
     description: String
     state: StoryState
-    type: StoryKind
+    kind: StoryKind
     points: Int
     requesterId: String
     projectId: String
@@ -12,7 +12,7 @@ export const schema = gql`
     isIcebox: Boolean
     project: Project
     owners: [User]!
-    storyOrderPriorities: [StoryOrderPriority]!
+    storyOrderPriority: StoryOrderPriority
     labels: [Label]!
     activities: [StoryActivity]!
     createdAt: DateTime!
