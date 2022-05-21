@@ -12,17 +12,17 @@ export const schema = gql`
     isIcebox: Boolean
     project: Project
     owners: [User]!
-    storyOrders: [StoryOrder]!
+    storyOrderPriorities: [StoryOrderPriority]!
     labels: [Label]!
     activities: [StoryActivity]!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
 
-  type StoryOrder {
+  type StoryOrderPriority {
     storyId: String!
     story: Story!
-    order: Int!
+    priority: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
@@ -48,31 +48,20 @@ export const schema = gql`
     story(id: String!): Story @requireAuth
   }
 
-  input CreateStoryInput {
+  input StoryInput {
     title: String!
     description: String
     state: StoryState
     points: Int
     requesterId: String
-    projectId: String
-    releaseDate: DateTime
-    isIcebox: Boolean
-  }
-
-  input UpdateStoryInput {
-    title: String
-    description: String
-    state: StoryState
-    points: Int
-    requesterId: String
-    projectId: String
     releaseDate: DateTime
     isIcebox: Boolean
   }
 
   type Mutation {
-    createStory(input: CreateStoryInput!): Story! @requireAuth
-    updateStory(id: String!, input: UpdateStoryInput!): Story! @requireAuth
+    createStory(projectId: String!, index: Int!, input: StoryInput!): Story!
+      @requireAuth
+    updateStory(id: String!, input: StoryInput!): Story! @requireAuth
     deleteStory(id: String!): Story! @requireAuth
   }
 `

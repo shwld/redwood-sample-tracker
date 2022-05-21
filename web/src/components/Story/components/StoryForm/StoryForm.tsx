@@ -12,7 +12,7 @@ import {
   TextAreaField,
 } from '@redwoodjs/forms'
 import { VFC } from 'react'
-import { CreateStoryInput, Story, UpdateStoryInput } from 'types/graphql'
+import { Story, StoryInput } from 'types/graphql'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -21,10 +21,10 @@ const formatDatetime = (value) => {
 }
 
 const StoryForm: VFC<{
-  story: Story
+  story?: Story
   loading: boolean
   error: any
-  onSave(input: CreateStoryInput | UpdateStoryInput, id?: string): void
+  onSave(input: StoryInput, id?: string): void
 }> = (props) => {
   const onSubmit = (data) => {
     if (data.state === '') {

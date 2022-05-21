@@ -15,9 +15,30 @@ export const story: QueryResolvers['story'] = ({ id }) => {
   })
 }
 
-export const createStory: MutationResolvers['createStory'] = ({ input }) => {
+export const createStory: MutationResolvers['createStory'] = async ({
+  projectId,
+  index,
+  input,
+}) => {
+  const project = await db.user
+    .findUnique({ where: { id: context.currentUser.id } })
+    .projects({ where: { id: projectId } })
+  if (project == null) return
+
   return db.story.create({
-    data: input,
+    data: {
+      ...input,
+      project: {
+        connect: {
+          id: projectId,
+        },
+      },
+      storyOrders: {
+        create: {
+          order: index,
+        },
+      },
+    },
   })
 }
 

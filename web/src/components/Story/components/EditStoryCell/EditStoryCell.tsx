@@ -26,7 +26,7 @@ export const QUERY = gql`
   }
 `
 const UPDATE_STORY_MUTATION = gql`
-  mutation UpdateStoryMutation($id: String!, $input: UpdateStoryInput!) {
+  mutation UpdateStoryMutation($id: String!, $input: StoryInput!) {
     updateStory(id: $id, input: $input) {
       id
       title
@@ -68,10 +68,17 @@ export const Success = ({ story }: CellSuccessProps<EditStoryById>) => {
   return (
     <div className="rw-segment">
       <header className="rw-segment-header">
-        <h2 className="rw-heading rw-heading-secondary">Edit Story {story.id}</h2>
+        <h2 className="rw-heading rw-heading-secondary">
+          Edit Story {story.id}
+        </h2>
       </header>
       <div className="rw-segment-main">
-        <StoryForm story={story} onSave={onSave} error={error} loading={loading} />
+        <StoryForm
+          story={story}
+          onSave={onSave}
+          error={error}
+          loading={loading}
+        />
       </div>
     </div>
   )
