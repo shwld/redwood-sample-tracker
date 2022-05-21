@@ -11,7 +11,7 @@ import { logger } from 'src/lib/logger'
 
 export const handler = createGraphQLHandler({
   getCurrentUser,
-  loggerConfig: { logger, options: {} },
+  loggerConfig: { logger, options: { tracing: true } },
   directives,
   sdls,
   services,

@@ -57,7 +57,7 @@ const CurrentCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
           isIcebox={false}
           projectId={projectId}
           onCancel={closeForm}
-          // onComplete={closeForm}
+          onComplete={closeForm}
         />
       )}
       {children}
@@ -80,7 +80,7 @@ const BacklogCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
           isIcebox={false}
           projectId={projectId}
           onCancel={closeForm}
-          // onComplete={closeForm}
+          onComplete={closeForm}
         />
       )}
       {children}
@@ -103,7 +103,7 @@ const IceboxCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
           isIcebox
           projectId={projectId}
           onCancel={closeForm}
-          // onComplete={closeForm}
+          onComplete={closeForm}
         />
       )}
       {children}

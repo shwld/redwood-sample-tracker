@@ -14,7 +14,7 @@ export const QUERY = gql`
       title
       description
       state
-      type
+      kind
       points
       requesterId
       projectId
@@ -32,7 +32,7 @@ const UPDATE_STORY_MUTATION = gql`
       title
       description
       state
-      type
+      kind
       points
       requesterId
       projectId

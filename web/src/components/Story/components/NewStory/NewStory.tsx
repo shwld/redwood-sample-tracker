@@ -32,7 +32,7 @@ const NewStory: React.VFC<{
   orderPriority?: number
   onCancel?(): void
   onComplete?(): void
-}> = ({ projectId, isIcebox, orderPriority = 0, onCancel, onComplete }) => {
+}> = ({ projectId, isIcebox, orderPriority, onCancel, onComplete }) => {
   const [createStory, { loading, error }] = useMutation<
     CreateStoryMutation,
     CreateStoryMutationVariables

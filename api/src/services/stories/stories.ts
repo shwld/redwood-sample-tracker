@@ -70,8 +70,6 @@ export const Story: StoryResolvers = {
     db.story.findUnique({ where: { id: root.id } }).project(),
   owners: (_obj, { root }) =>
     db.story.findUnique({ where: { id: root.id } }).owners(),
-  storyOrders: (_obj, { root }) =>
-    db.story.findUnique({ where: { id: root.id } }).storyOrders(),
   labels: (_obj, { root }) =>
     db.story.findUnique({ where: { id: root.id } }).labels(),
   activities: (_obj, { root }) =>

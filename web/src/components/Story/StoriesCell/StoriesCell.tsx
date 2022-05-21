@@ -5,7 +5,7 @@ import Stories from 'src/components/Story/Stories/Stories'
 export const QUERY = gql`
   fragment StoryFragment on Story {
     id
-    type
+    kind
     title
     state
     isIcebox
