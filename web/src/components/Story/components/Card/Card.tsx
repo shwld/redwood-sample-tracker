@@ -27,9 +27,9 @@ export const Head: React.VFC<
       px={2}
       {...props}
     >
-      <HStack justify="space-between">
+      <HStack justify="space-between" align="center">
         <Text color="gray.100">{title}</Text>
-        <HStack align="flex-end">
+        <HStack align="center">
           {children}
           <IconButton
             aria-label=""

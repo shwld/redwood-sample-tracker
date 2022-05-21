@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react'
+import { HStack, Icon, Text } from '@chakra-ui/react'
 import Card, { Head } from 'src/components/Story/components/Card/Card'
 import { StoryFragment } from 'types/graphql'
 import StoryAddButton from '../components/StoryAddButton/StoryAddButton'
@@ -6,14 +6,7 @@ import { ReactNode, useState, VFC } from 'react'
 import NewStory from '../components/NewStory/NewStory'
 import StoryItem from '../components/StoryItem/StoryItem'
 import StoryCell from '../StoryCell'
-
-const DELETE_STORY_MUTATION = gql`
-  mutation DeleteStoryMutation($id: String!) {
-    deleteStory(id: $id) {
-      id
-    }
-  }
-`
+import { BsSpeedometer } from 'react-icons/bs'
 
 const useNewStoryForm = () => {
   const [formOpened, setOpenedForm] = useState(false)
@@ -43,14 +36,17 @@ const DoneCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
   )
 }
 
-const CurrentCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
-  projectId,
-  children,
-}) => {
+const CurrentCard: React.VFC<{
+  currentVelocity: number
+  projectId: string
+  children?: ReactNode
+}> = ({ currentVelocity, projectId, children }) => {
   const { formOpened, openForm, closeForm } = useNewStoryForm()
   return (
     <Card>
       <Head title="Current Iteration">
+        <Icon as={BsSpeedometer} color="white" />
+        <Text color="white"> {currentVelocity}</Text>
         <StoryAddButton onClick={openForm} />
       </Head>
       {formOpened && (
@@ -142,7 +138,7 @@ const Stories: React.VFC<{
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">
       <DoneCard projectId={projectId} />
-      <CurrentCard projectId={projectId}>
+      <CurrentCard projectId={projectId} currentVelocity={currentVelocity}>
         {backlogStories.map((story) => (
           <Story key={story.id} story={story} />
         ))}
