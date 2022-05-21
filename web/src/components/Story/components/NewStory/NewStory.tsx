@@ -11,6 +11,20 @@ import {
 import { QUERY } from '../../StoriesCell'
 
 const CREATE_STORY_MUTATION = gql`
+  fragment NewStoryFragment on Story {
+    id
+    title
+    description
+    state
+    kind
+    points
+    requesterId
+    projectId
+    releaseDate
+    isIcebox
+    createdAt
+    updatedAt
+  }
   mutation CreateStoryMutation(
     $projectId: String!
     $orderPriority: Int
@@ -21,7 +35,7 @@ const CREATE_STORY_MUTATION = gql`
       orderPriority: $orderPriority
       input: $input
     ) {
-      id
+      ...NewStoryFragment
     }
   }
 `

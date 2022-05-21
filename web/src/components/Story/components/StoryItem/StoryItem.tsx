@@ -11,9 +11,16 @@ import { StoryFragment } from 'types/graphql'
 
 const StoryItem: React.VFC<{
   story: StoryFragment
-}> = ({ story }) => {
+  onClick?(): void
+}> = ({ story, onClick }) => {
   return (
-    <ListItem borderBottom="1px" borderColor="gray.200" py={1} px={2}>
+    <ListItem
+      borderBottom="1px"
+      borderColor="gray.200"
+      py={1}
+      px={2}
+      onClick={onClick}
+    >
       <HStack justify="space-between">
         <HStack>
           <ListIcon as={StarIcon} color="green.400" />

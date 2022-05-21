@@ -1,4 +1,5 @@
-import { Box, Button, HStack, VStack } from '@chakra-ui/react'
+import { VscChevronUp } from 'react-icons/vsc'
+import { Box, Button, HStack, IconButton, VStack } from '@chakra-ui/react'
 import {
   Form,
   FormError,
@@ -12,7 +13,7 @@ import {
   TextAreaField,
 } from '@redwoodjs/forms'
 import { VFC } from 'react'
-import { Story, StoryInput } from 'types/graphql'
+import { EditStoryFragment, StoryInput } from 'types/graphql'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -21,11 +22,12 @@ const formatDatetime = (value) => {
 }
 
 const StoryForm: VFC<{
-  story?: Story
+  story?: EditStoryFragment
   loading: boolean
   error: any
   onSave(input: StoryInput, id?: string): void
   onCancel?(): void
+  onClose?(): void
 }> = (props) => {
   const onSubmit = (data) => {
     if (data.state === '') {
@@ -45,14 +47,24 @@ const StoryForm: VFC<{
           listClassName="rw-form-error-list"
         />
 
-        <VStack>
-          <TextField
-            name="title"
-            defaultValue={props.story?.title}
-            className="rw-input"
-            errorClassName="rw-input rw-input-error"
-            validation={{ required: true }}
-          />
+        <VStack align="flex-start">
+          <HStack w="full">
+            {props.onClose != null && (
+              <IconButton
+                aria-label="Close"
+                icon={<VscChevronUp />}
+                size="sm"
+                onClick={props.onClose}
+              />
+            )}
+            <TextField
+              name="title"
+              defaultValue={props.story?.title}
+              className="rw-input"
+              errorClassName="rw-input rw-input-error"
+              validation={{ required: true }}
+            />
+          </HStack>
 
           <FieldError name="title" className="rw-field-error" />
         </VStack>
@@ -105,7 +117,7 @@ const StoryForm: VFC<{
               id="story-type-0"
               name="kind"
               defaultValue="FEATURE"
-              defaultChecked={props.story?.type?.includes('FEATURE')}
+              defaultChecked={props.story?.kind?.includes('FEATURE')}
               className="rw-input"
               errorClassName="rw-input rw-input-error"
             >

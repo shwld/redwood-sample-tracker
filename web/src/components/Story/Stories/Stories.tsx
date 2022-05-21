@@ -2,9 +2,10 @@ import { HStack } from '@chakra-ui/react'
 import Card, { Head } from 'src/components/Story/components/Card/Card'
 import { StoryFragment } from 'types/graphql'
 import StoryAddButton from '../components/StoryAddButton/StoryAddButton'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, VFC } from 'react'
 import NewStory from '../components/NewStory/NewStory'
 import StoryItem from '../components/StoryItem/StoryItem'
+import StoryCell from '../StoryCell'
 
 const DELETE_STORY_MUTATION = gql`
   mutation DeleteStoryMutation($id: String!) {
@@ -111,6 +112,22 @@ const IceboxCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
   )
 }
 
+const Story: VFC<{ story: StoryFragment }> = ({ story }) => {
+  const [opened, setOpened] = useState(false)
+  return (
+    <>
+      {!opened && (
+        <StoryItem
+          key={story.id}
+          story={story}
+          onClick={() => setOpened(true)}
+        />
+      )}
+      {opened && <StoryCell id={story.id} onClose={() => setOpened(false)} />}
+    </>
+  )
+}
+
 const Stories: React.VFC<{
   projectId: string
   currentVelocity: number
@@ -123,17 +140,17 @@ const Stories: React.VFC<{
       <DoneCard projectId={projectId} />
       <CurrentCard projectId={projectId}>
         {backlogStories.map((story) => (
-          <StoryItem key={story.id} story={story} />
+          <Story key={story.id} story={story} />
         ))}
       </CurrentCard>
       <BacklogCard projectId={projectId}>
         {backlogStories.map((story) => (
-          <StoryItem key={story.id} story={story} />
+          <Story key={story.id} story={story} />
         ))}
       </BacklogCard>
       <IceboxCard projectId={projectId}>
         {iceboxStories.map((story) => (
-          <StoryItem key={story.id} story={story} />
+          <Story key={story.id} story={story} />
         ))}
       </IceboxCard>
     </HStack>
