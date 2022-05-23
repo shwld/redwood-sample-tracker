@@ -53,7 +53,7 @@ export const schema = gql`
   }
 
   type Query {
-    stories: [Story!]! @requireAuth
+    stories(projectId: String!): [Story!]! @requireAuth
     story(id: String!): Story @requireAuth
   }
 
@@ -69,11 +69,8 @@ export const schema = gql`
   }
 
   type Mutation {
-    createStory(
-      projectId: String!
-      orderPriority: Int
-      input: StoryInput!
-    ): Story! @requireAuth
+    createStory(projectId: String!, index: Int, input: StoryInput!): Story!
+      @requireAuth
     updateStory(id: String!, input: StoryInput!): Story! @requireAuth
     deleteStory(id: String!): Story! @requireAuth
   }

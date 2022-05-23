@@ -28,14 +28,10 @@ const CREATE_STORY_MUTATION = gql`
   }
   mutation CreateStoryMutation(
     $projectId: String!
-    $orderPriority: Int
+    $index: Int
     $input: StoryInput!
   ) {
-    createStory(
-      projectId: $projectId
-      orderPriority: $orderPriority
-      input: $input
-    ) {
+    createStory(projectId: $projectId, index: $index, input: $input) {
       ...NewStoryFragment
     }
   }
@@ -44,10 +40,10 @@ const CREATE_STORY_MUTATION = gql`
 const NewStory: React.VFC<{
   projectId: string
   position?: StoryPosition
-  orderPriority?: number
+  index?: number
   onCancel?(): void
   onComplete?(): void
-}> = ({ projectId, position, orderPriority, onCancel, onComplete }) => {
+}> = ({ projectId, position, index, onCancel, onComplete }) => {
   const [createStory, { loading, error }] = useMutation<
     CreateStoryMutation,
     CreateStoryMutationVariables
@@ -90,7 +86,7 @@ const NewStory: React.VFC<{
           position,
         },
         projectId,
-        orderPriority,
+        index,
       },
     })
   }
