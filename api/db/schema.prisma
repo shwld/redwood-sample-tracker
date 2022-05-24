@@ -62,7 +62,6 @@ model Story {
   requesterId   String?
   projectId   String?
   releaseDate DateTime?
-  position    StoryPosition @default(ICEBOX)
   project     Project?   @relation(fields: [projectId], references: [id])
   owners        User[]
   storyOrderPriority   StoryOrderPriority?
@@ -77,11 +76,12 @@ model StoryOrderPriority {
   project    Project @relation(fields: [projectId], references: [id])
   storyId    String
   story      Story   @relation(fields: [storyId], references: [id])
+  position    StoryPosition @default(ICEBOX)
   priority      Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   @@id([storyId])
-  @@index([projectId, priority])
+  @@index([projectId, position, priority])
 }
 
 model Label {
