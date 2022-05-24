@@ -77,7 +77,7 @@ model StoryOrderPriority {
   project    Project @relation(fields: [projectId], references: [id])
   storyId    String
   story      Story   @relation(fields: [storyId], references: [id])
-  priority      Int @unique
+  priority      Int
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   @@id([storyId])
