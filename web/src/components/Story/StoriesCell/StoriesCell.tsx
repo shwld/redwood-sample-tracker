@@ -8,9 +8,15 @@ export const QUERY = gql`
     kind
     title
     state
-    position
+    orderPriority {
+      position
+      priority
+    }
     points
     isDeleted
+    orderPriority {
+      priority
+    }
   }
   query StoriesQuery($projectId: String!) {
     project(id: $projectId) {

@@ -14,7 +14,10 @@ export const QUERY = gql`
     requesterId
     projectId
     releaseDate
-    position
+    orderPriority {
+      position
+      priority
+    }
     createdAt
     updatedAt
   }
@@ -37,7 +40,10 @@ const UPDATE_STORY_MUTATION = gql`
       requesterId
       projectId
       releaseDate
-      position
+      orderPriority {
+        position
+        priority
+      }
       createdAt
       updatedAt
     }

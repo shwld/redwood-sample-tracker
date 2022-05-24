@@ -22,7 +22,10 @@ const CREATE_STORY_MUTATION = gql`
     requesterId
     projectId
     releaseDate
-    position
+    orderPriority {
+      position
+      priority
+    }
     createdAt
     updatedAt
   }

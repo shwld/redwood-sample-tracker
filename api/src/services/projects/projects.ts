@@ -80,9 +80,12 @@ export const Project: ProjectResolvers = {
   account: (_obj, { root }) =>
     db.project.findUnique({ where: { id: root.id } }).account(),
   stories: (_obj, { root }) =>
-    db.project
-      .findUnique({ where: { id: root.id } })
-      .stories({ orderBy: { storyOrderPriority: { priority: 'desc' } } }),
+    db.project.findUnique({ where: { id: root.id } }).stories({
+      orderBy: [
+        { storyOrderPriority: { position: 'desc' } },
+        { storyOrderPriority: { priority: 'desc' } },
+      ],
+    }),
   members: (_obj, { root }) =>
     db.project.findUnique({ where: { id: root.id } }).members(),
 }

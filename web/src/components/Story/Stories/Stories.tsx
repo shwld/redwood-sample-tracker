@@ -7,22 +7,7 @@ import NewStory from '../components/NewStory/NewStory'
 import StoryItem from '../components/StoryItem/StoryItem'
 import StoryCell from '../StoryCell'
 import { BsSpeedometer } from 'react-icons/bs'
-
-const useNewStoryForm = () => {
-  const [formOpened, setOpenedForm] = useState(false)
-  const openForm = () => {
-    setOpenedForm(true)
-  }
-  const closeForm = () => {
-    setOpenedForm(false)
-  }
-
-  return {
-    formOpened,
-    openForm,
-    closeForm,
-  }
-}
+import { useNewStoryForm } from './hooks'
 
 const DoneCard: React.VFC<{ projectId: string; children?: ReactNode }> = ({
   projectId,
@@ -141,6 +126,7 @@ const Stories: React.VFC<{
   )
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">
+      {/* <DragDropContext onDragEnd={onDragEnd}> */}
       <DoneCard projectId={projectId} />
       <CurrentCard projectId={projectId} currentVelocity={currentVelocity}>
         {currentStories.map((story) => (
@@ -157,6 +143,7 @@ const Stories: React.VFC<{
           <Story key={story.id} story={story} />
         ))}
       </IceboxCard>
+      {/* </DragDropContext> */}
     </HStack>
   )
 }

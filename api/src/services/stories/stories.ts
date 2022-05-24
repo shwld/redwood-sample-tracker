@@ -23,14 +23,14 @@ export const story: QueryResolvers['story'] = ({ id }) => {
 
 export const createStory: MutationResolvers['createStory'] = async ({
   projectId,
-  index,
+  destination,
   input,
 }) => {
   const { releaseDate, ...storyInput } = input
   return storyRepository.createStory({
     userId: context.currentUser.id,
     projectId,
-    index,
+    destination,
     input: {
       ...storyInput,
       releaseDate: new Date(releaseDate),
@@ -53,6 +53,20 @@ export const updateStory: MutationResolvers['updateStory'] = ({
   })
 }
 
+export const moveStory: MutationResolvers['moveStory'] = ({
+  ids,
+  destination,
+}) => {
+  return storyRepository.reorderStories({
+    storyIds: ids,
+    userId: context.currentUser.id,
+    destination: {
+      position: destination.position,
+      priority: destination.priority,
+    },
+  })
+}
+
 export const deleteStory: MutationResolvers['deleteStory'] = async ({ id }) => {
   const story = await storyRepository.deleteStory({
     userId: context.currentUser.id,
@@ -67,6 +81,8 @@ export const deleteStory: MutationResolvers['deleteStory'] = async ({ id }) => {
 }
 
 export const Story: StoryResolvers = {
+  orderPriority: (_obj, { root }) =>
+    db.story.findUnique({ where: { id: root.id } }).storyOrderPriority(),
   project: (_obj, { root }) =>
     db.story.findUnique({ where: { id: root.id } }).project(),
   owners: (_obj, { root }) =>
