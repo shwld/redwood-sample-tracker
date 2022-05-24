@@ -42,16 +42,58 @@ export const standard = defineScenario<
   story: {
     one: {
       data: {
-        title: 'String',
+        title: 'Story 1',
         updatedAt: '2022-05-20T20:38:49Z',
         projectId: PROJECT_ID,
+        storyOrderPriority: {
+          create: {
+            position: 'CURRENT',
+            priority: 1,
+            projectId: PROJECT_ID,
+          },
+        },
       },
     },
     two: {
       data: {
-        title: 'String',
-        updatedAt: '2022-05-20T20:38:49Z',
+        title: 'Story 2',
+        updatedAt: '2022-05-20T20:39:49Z',
         projectId: PROJECT_ID,
+        storyOrderPriority: {
+          create: {
+            position: 'CURRENT',
+            priority: 2,
+            projectId: PROJECT_ID,
+          },
+        },
+      },
+    },
+    three: {
+      data: {
+        title: 'Story 3',
+        updatedAt: '2022-05-20T20:40:49Z',
+        projectId: PROJECT_ID,
+        storyOrderPriority: {
+          create: {
+            position: 'CURRENT',
+            priority: 3,
+            projectId: PROJECT_ID,
+          },
+        },
+      },
+    },
+    four: {
+      data: {
+        title: 'Story 4',
+        updatedAt: '2022-05-20T20:40:49Z',
+        projectId: PROJECT_ID,
+        storyOrderPriority: {
+          create: {
+            position: 'CURRENT',
+            priority: 4,
+            projectId: PROJECT_ID,
+          },
+        },
       },
     },
   },
