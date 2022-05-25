@@ -60,46 +60,6 @@ export function storyOfUser(args: {
   })
 }
 
-export async function getStoryPriority(args: {
-  projectId: string
-  position: StoryPosition
-  index?: number
-}): Promise<number> {
-  if (args.index != null) {
-    const indexedStory = await db.story.findFirst({
-      where: {
-        projectId: args.projectId,
-        storyOrderPriority: {
-          position: args.position,
-        },
-      },
-      skip: args.index,
-      include: {
-        storyOrderPriority: true,
-      },
-      orderBy: {
-        storyOrderPriority: {
-          priority: 'desc',
-        },
-      },
-    })
-    const priority = indexedStory?.storyOrderPriority.priority ?? 0
-    return priority
-  }
-
-  const storiesCount = await db.story.aggregate({
-    where: {
-      projectId: args.projectId,
-      storyOrderPriority: {
-        position: args.position,
-      },
-    },
-    _count: true,
-  })
-
-  return storiesCount._count
-}
-
 type Input = {
   description?: Story['description']
   kind: Story['kind']
@@ -115,7 +75,7 @@ export async function createStory(args: {
   projectId: string
   destination: {
     position: Omit<StoryOrderPriority['position'], 'DONE'>
-    index?: number
+    priority: number
   }
   input: Input
 }): Promise<Story | undefined> {
@@ -123,12 +83,6 @@ export async function createStory(args: {
     .findUnique({ where: { id: args.userId } })
     .projects({ where: { id: args.projectId } })
   if (project == null) return
-
-  const priority = await getStoryPriority({
-    projectId: args.projectId,
-    position: args.destination.position as StoryPosition,
-    index: args.destination.index,
-  })
 
   return db.story.create({
     data: {
@@ -145,7 +99,7 @@ export async function createStory(args: {
               id: args.projectId,
             },
           },
-          priority,
+          priority: args.destination.priority,
         },
       },
     },

@@ -39,7 +39,7 @@ describe('storiesRepository', () => {
       projectId: scenario.project.one.id,
       destination: {
         position: 'CURRENT',
-        index: 2,
+        priority: 2,
       },
       input: { title: 'String', kind: 'FEATURE' },
     })
