@@ -129,7 +129,6 @@ export async function createStory(args: {
     position: args.destination.position as StoryPosition,
     index: args.destination.index,
   })
-  console.log('priority', priority)
 
   return db.story.create({
     data: {
@@ -190,41 +189,88 @@ type StoryAndPosition = Story & {
   storyOrderPriority: StoryOrderPriority
 }
 
-async function shiftPriority(args: {
-  stories: Array<StoryAndPosition>
-  position: StoryPosition
+// 移動元ストーリーのpriority分詰める
+async function closePriority(args: {
+  projectId: string
+  sourceStories: Array<StoryAndPosition>
+  sourcePosition: StoryPosition
 }): Promise<StoryOrderPriority[]> {
-  const targets = args.stories.filter(
-    (it) => it.storyOrderPriority.position === args.position
+  const sources = args.sourceStories.filter(
+    (it) => it.storyOrderPriority.position === args.sourcePosition
   )
-  if (targets.length === 0) return []
+  if (sources.length === 0) return []
 
-  const minimumDoneIndex = Math.min(
-    ...targets.map((it) => it.storyOrderPriority.priority)
+  const maximumPriority = Math.max(
+    ...args.sourceStories.map((it) => it.storyOrderPriority.priority)
   )
   const targetItems = await db.storyOrderPriority.findMany({
     where: {
-      priority: {
-        gte: minimumDoneIndex,
+      projectId: args.projectId,
+      storyId: {
+        notIn: sources.map((it) => it.id),
       },
-      position: args.position,
+      priority: {
+        gt: maximumPriority,
+      },
+      position: args.sourcePosition,
     },
   })
-  db.storyOrderPriority.updateMany({
+  await db.storyOrderPriority.updateMany({
     where: {
+      projectId: args.projectId,
       storyId: {
         in: targetItems.map((it) => it.storyId),
       },
-      position: StoryPosition.DONE,
+      position: args.sourcePosition,
     },
     data: {
       priority: {
-        increment: targets.length,
+        decrement: sources.length,
       },
     },
   })
   return targetItems
 }
+
+async function shiftPriority(args: {
+  projectId: string
+  sourceStories: Array<StoryAndPosition>
+  destination: { position: StoryPosition; priority: number }
+}): Promise<StoryOrderPriority[]> {
+  if (args.sourceStories.length === 0) return []
+
+  const destinations = args.sourceStories.filter(
+    (it) => it.storyOrderPriority.position === args.destination.position
+  )
+  const targetItems = await db.storyOrderPriority.findMany({
+    where: {
+      projectId: args.projectId,
+      storyId: {
+        notIn: destinations.map((it) => it.id),
+      },
+      priority: {
+        gte: args.destination.priority,
+      },
+      position: args.destination.position,
+    },
+  })
+  await db.storyOrderPriority.updateMany({
+    where: {
+      projectId: args.projectId,
+      storyId: {
+        in: targetItems.map((it) => it.storyId),
+      },
+      position: args.destination.position,
+    },
+    data: {
+      priority: {
+        increment: args.sourceStories.length,
+      },
+    },
+  })
+  return targetItems
+}
+
 export async function reorderStories(args: {
   storyIds: string[]
   userId: string
@@ -251,37 +297,44 @@ export async function reorderStories(args: {
   })
 
   if (stories.length === 0) return []
+  const projectId = stories[0].projectId
 
-  const effectedDoneStories = [
+  const effectedStories = [
     StoryPosition.DONE,
     StoryPosition.CURRENT,
     StoryPosition.BACKLOG,
     StoryPosition.ICEBOX,
   ].map((position) => {
-    return shiftPriority({
-      stories,
-      position,
+    return closePriority({
+      projectId,
+      sourceStories: stories,
+      sourcePosition: position,
     })
   })
-
-  const result = await Promise.all(effectedDoneStories)
-  const effectedItemIds = result.flat().map((it) => it.storyId)
+  const effectStoriesPromises = await Promise.all(effectedStories)
+  const effectedItemIds = effectStoriesPromises.flat().map((it) => it.storyId)
   const storyIds = stories.map((it) => it.id)
 
-  await db.storyOrderPriority.updateMany({
-    where: {
-      storyId: {
-        in: storyIds,
-      },
-    },
-    data: {
-      position: args.destination.position,
-      priority: {
-        set: args.destination.priority - 1,
-        increment: 1,
-      },
-    },
+  await shiftPriority({
+    projectId,
+    sourceStories: stories,
+    destination: args.destination,
   })
+
+  const updatesPromises = storyIds.map((storyId, index) =>
+    db.storyOrderPriority.update({
+      where: {
+        storyId,
+      },
+      data: {
+        position: args.destination.position,
+        priority: {
+          set: args.destination.priority + index,
+        },
+      },
+    })
+  )
+  await Promise.all(updatesPromises)
 
   return db.story.findMany({
     where: {

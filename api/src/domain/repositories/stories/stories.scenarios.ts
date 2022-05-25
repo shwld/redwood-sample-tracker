@@ -48,7 +48,7 @@ export const standard = defineScenario<
         storyOrderPriority: {
           create: {
             position: 'CURRENT',
-            priority: 1,
+            priority: 0,
             projectId: PROJECT_ID,
           },
         },
@@ -62,7 +62,7 @@ export const standard = defineScenario<
         storyOrderPriority: {
           create: {
             position: 'CURRENT',
-            priority: 2,
+            priority: 1,
             projectId: PROJECT_ID,
           },
         },
@@ -76,7 +76,7 @@ export const standard = defineScenario<
         storyOrderPriority: {
           create: {
             position: 'CURRENT',
-            priority: 3,
+            priority: 2,
             projectId: PROJECT_ID,
           },
         },
@@ -90,7 +90,7 @@ export const standard = defineScenario<
         storyOrderPriority: {
           create: {
             position: 'CURRENT',
-            priority: 4,
+            priority: 3,
             projectId: PROJECT_ID,
           },
         },

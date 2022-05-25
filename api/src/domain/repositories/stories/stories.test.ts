@@ -1,10 +1,10 @@
-import { db } from 'src/lib/db'
 import {
   storiesOfUserProject,
   storyOfUser,
   createStory,
   updateStory,
   deleteStory,
+  reorderStories,
 } from './stories'
 import type { StandardScenario } from './stories.scenarios'
 
@@ -72,5 +72,29 @@ describe('storiesRepository', () => {
     })
 
     expect(result).toEqual(null)
+  })
+
+  scenario('reorder stories', async (scenario: StandardScenario) => {
+    const effectedStories = await reorderStories({
+      storyIds: [scenario.story.one.id],
+      destination: {
+        position: 'CURRENT',
+        priority: 2,
+      },
+      userId: scenario.user.one.id,
+    })
+
+    const results = effectedStories
+      .map((it) => ({
+        title: it.title,
+        priority: it.storyOrderPriority.priority,
+      }))
+      .sort((a, b) => (a.priority > b.priority ? -1 : 0))
+    expect(results).toEqual([
+      { title: 'Story 4', priority: 3 },
+      { title: 'Story 1', priority: 2 },
+      { title: 'Story 3', priority: 1 },
+      { title: 'Story 2', priority: 0 },
+    ])
   })
 })

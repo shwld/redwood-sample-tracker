@@ -9,10 +9,9 @@ export const schema = gql`
     requesterId: String
     projectId: String
     releaseDate: DateTime
-    position: StoryPosition
     project: Project
     owners: [User]!
-    storyOrderPriority: StoryOrderPriority
+    orderPriority: StoryOrderPriority
     labels: [Label]!
     activities: [StoryActivity]!
     createdAt: DateTime!
@@ -24,6 +23,7 @@ export const schema = gql`
   type StoryOrderPriority {
     storyId: String!
     story: Story!
+    position: StoryPosition
     priority: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
@@ -68,10 +68,20 @@ export const schema = gql`
     position: StoryPosition
   }
 
+  input StoryDestination {
+    position: StoryPosition!
+    priority: Int!
+  }
+
   type Mutation {
-    createStory(projectId: String!, index: Int, input: StoryInput!): Story!
-      @requireAuth
+    createStory(
+      projectId: String!
+      destination: StoryDestination
+      input: StoryInput!
+    ): Story! @requireAuth
     updateStory(id: String!, input: StoryInput!): Story! @requireAuth
+    moveStory(ids: [String!]!, destination: StoryDestination!): [Story!]!
+      @requireAuth
     deleteStory(id: String!): Story! @requireAuth
   }
 `
