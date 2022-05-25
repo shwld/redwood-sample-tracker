@@ -99,6 +99,7 @@ export async function createStory(args: {
               id: args.projectId,
             },
           },
+          position: args.destination.position as StoryOrderPriority['position'],
           priority: args.destination.priority,
         },
       },

@@ -65,7 +65,6 @@ export const schema = gql`
     points: Int
     requesterId: String
     releaseDate: DateTime
-    position: StoryPosition
   }
 
   input StoryDestination {
