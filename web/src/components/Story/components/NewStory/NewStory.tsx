@@ -58,7 +58,10 @@ const NewStory: React.VFC<{
     CreateStoryMutationVariables
   >(CREATE_STORY_MUTATION, {
     update(cache, result) {
-      const story = result.data.createStory
+      const story = {
+        isDeleted: false,
+        ...result.data.createStory,
+      }
       const data = cache.readQuery<StoriesQuery, StoriesQueryVariables>({
         query: QUERY,
         variables: {
