@@ -7201,6 +7201,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-beautiful-dnd@npm:^13.1.2":
+  version: 13.1.2
+  resolution: "@types/react-beautiful-dnd@npm:13.1.2"
+  dependencies:
+    "@types/react": "*"
+  checksum: 39b4928255a37c72b86bd0a6f8734ae826d5bd4d81d355786099276231640deba64c8bc2d6ad7d4e1d71ea364e37815ada3da293dca2d1d9569174eaf819ee89
+  languageName: node
+  linkType: hard
+
 "@types/react-dom@npm:17.0.16":
   version: 17.0.16
   resolution: "@types/react-dom@npm:17.0.16"
@@ -22166,6 +22175,7 @@ __metadata:
   dependencies:
     "@chakra-ui/icons": ^2.0.0
     "@redwoodjs/core": 1.4.1
+    "@types/react-beautiful-dnd": ^13.1.2
     react-beautiful-dnd: ^13.1.0
     react-icons: ^4.3.1
   languageName: unknown

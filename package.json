@@ -8,7 +8,8 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "1.4.1"
+    "@redwoodjs/core": "1.4.1",
+    "@types/react-beautiful-dnd": "^13.1.2"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",

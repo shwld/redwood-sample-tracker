@@ -6,6 +6,7 @@ import {
   StoryOrderPriority,
   StoryPosition,
 } from '@prisma/client'
+import { logger } from 'src/lib/logger'
 
 export function storiesOfUserProject(
   args: {
@@ -267,14 +268,17 @@ export async function reorderStories(args: {
     })
   })
   const effectStoriesPromises = await Promise.all(effectedStories)
-  const effectedItemIds = effectStoriesPromises.flat().map((it) => it.storyId)
+  const effectedClosedItemIds = effectStoriesPromises
+    .flat()
+    .map((it) => it.storyId)
   const storyIds = stories.map((it) => it.id)
 
-  await shiftPriority({
+  const shiftPriorities = await shiftPriority({
     projectId,
     sourceStories: stories,
     destination: args.destination,
   })
+  const effectedShiftItemIds = shiftPriorities.map((it) => it.storyId)
 
   const updatesPromises = storyIds.map((storyId, index) =>
     db.storyOrderPriority.update({
@@ -291,10 +295,17 @@ export async function reorderStories(args: {
   )
   await Promise.all(updatesPromises)
 
+  logger.debug(
+    `-------- ${JSON.stringify([
+      ...effectedClosedItemIds,
+      ...effectedShiftItemIds,
+      ...storyIds,
+    ])}`
+  )
   return db.story.findMany({
     where: {
       id: {
-        in: [...effectedItemIds, ...storyIds],
+        in: [...effectedClosedItemIds, ...effectedShiftItemIds, ...storyIds],
       },
     },
     include: {

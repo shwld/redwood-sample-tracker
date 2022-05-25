@@ -9,6 +9,8 @@ import {
   HStack,
   Icon,
   IconButton,
+  BoxProps,
+  forwardRef,
 } from '@chakra-ui/react'
 import { CloseIcon, AddIcon } from '@chakra-ui/icons'
 import { ComponentProps, ReactNode } from 'react'
@@ -43,9 +45,7 @@ export const Head: React.VFC<
   )
 }
 
-const Card: React.VFC<{
-  children?: ReactNode
-}> = ({ children }) => {
+const Card = forwardRef<BoxProps, 'div'>(({ children, ...props }, ref) => {
   return (
     <Box
       maxW={'380px'}
@@ -54,10 +54,12 @@ const Card: React.VFC<{
       boxShadow={'2xl'}
       rounded={'md'}
       overflowY="auto"
+      {...props}
+      ref={ref}
     >
       <List>{children}</List>
     </Box>
   )
-}
+})
 
 export default Card

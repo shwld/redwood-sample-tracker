@@ -1,127 +1,66 @@
 import { HStack, Icon, Text } from '@chakra-ui/react'
 import Card, { Head } from 'src/components/Story/components/Card/Card'
-import { StoryFragment } from 'types/graphql'
+import { StoryFragment, StoryPosition } from 'types/graphql'
 import StoryAddButton from '../components/StoryAddButton/StoryAddButton'
-import { ReactNode, useState, VFC } from 'react'
+import { ReactNode } from 'react'
 import NewStory from '../components/NewStory/NewStory'
 import StoryItem from '../components/StoryItem/StoryItem'
-import StoryCell from '../StoryCell'
 import { BsSpeedometer } from 'react-icons/bs'
-import { useNewStoryForm } from './hooks'
-
-const DoneCard: React.VFC<{ projectId: string }> = ({ projectId }) => {
-  return (
-    <Card>
-      <Head title="Done" />
-    </Card>
-  )
-}
+import { useMovableStoryList, useNewStoryForm } from './hooks'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 const nextPriority = (stories: StoryFragment[]): number => {
   if (stories.length === 0) return 0
-  return stories[0].orderPriority.priority
+  return stories[0].orderPriority.priority + 1
 }
 
-const CurrentCard: React.VFC<{
-  currentVelocity: number
+const StoryCard: React.VFC<{
+  title: string
   projectId: string
   stories: StoryFragment[]
-}> = ({ currentVelocity, projectId, stories }) => {
+  position?: StoryPosition
+  headerChildren?: ReactNode
+}> = ({ title, position, projectId, stories, headerChildren }) => {
   const { formOpened, openForm, closeForm } = useNewStoryForm()
   return (
-    <Card>
-      <Head title="Current Iteration">
-        <Icon as={BsSpeedometer} color="white" />
-        <Text color="white"> {currentVelocity}</Text>
-        <StoryAddButton onClick={openForm} />
-      </Head>
-      {formOpened && (
-        <NewStory
-          destination={{
-            position: 'CURRENT',
-            priority: nextPriority(stories),
-          }}
-          projectId={projectId}
-          onCancel={closeForm}
-          onComplete={closeForm}
-        />
-      )}
-      {stories.map((story) => (
-        <Story key={story.id} story={story} />
-      ))}
-    </Card>
-  )
-}
-
-const BacklogCard: React.VFC<{
-  projectId: string
-  stories: StoryFragment[]
-}> = ({ projectId, stories }) => {
-  const { formOpened, openForm, closeForm } = useNewStoryForm()
-  return (
-    <Card>
-      <Head title="Backlog">
-        <StoryAddButton onClick={openForm} />
-      </Head>
-      {formOpened && (
-        <NewStory
-          destination={{
-            position: 'BACKLOG',
-            priority: nextPriority(stories),
-          }}
-          projectId={projectId}
-          onCancel={closeForm}
-          onComplete={closeForm}
-        />
-      )}
-      {stories.map((story) => (
-        <Story key={story.id} story={story} />
-      ))}
-    </Card>
-  )
-}
-
-const IceboxCard: React.VFC<{
-  projectId: string
-  stories: StoryFragment[]
-}> = ({ projectId, stories }) => {
-  const { formOpened, openForm, closeForm } = useNewStoryForm()
-  return (
-    <Card>
-      <Head title="Icebox">
-        <StoryAddButton onClick={openForm} />
-      </Head>
-      {formOpened && (
-        <NewStory
-          destination={{
-            position: 'ICEBOX',
-            priority: nextPriority(stories),
-          }}
-          projectId={projectId}
-          onCancel={closeForm}
-          onComplete={closeForm}
-        />
-      )}
-      {stories.map((story) => (
-        <Story key={story.id} story={story} />
-      ))}
-    </Card>
-  )
-}
-
-const Story: VFC<{ story: StoryFragment }> = ({ story }) => {
-  const [opened, setOpened] = useState(false)
-  return (
-    <>
-      {!opened && (
-        <StoryItem
-          key={story.id}
-          story={story}
-          onClick={() => setOpened(true)}
-        />
-      )}
-      {opened && <StoryCell id={story.id} onClose={() => setOpened(false)} />}
-    </>
+    <Droppable droppableId={position}>
+      {(provided, _snapshot) => {
+        return (
+          <Card ref={provided.innerRef} {...provided.droppableProps}>
+            <Head title={title}>
+              {headerChildren}
+              {position !== 'DONE' && <StoryAddButton onClick={openForm} />}
+            </Head>
+            {position !== 'DONE' && formOpened && (
+              <NewStory
+                destination={{
+                  position,
+                  priority: nextPriority(stories),
+                }}
+                projectId={projectId}
+                onCancel={closeForm}
+                onComplete={closeForm}
+              />
+            )}
+            {stories.map((story, index) => {
+              return (
+                <Draggable key={story.id} draggableId={story.id} index={index}>
+                  {(provided, _snapshot) => (
+                    <StoryItem
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      story={story}
+                    />
+                  )}
+                </Draggable>
+              )
+            })}
+            {provided.placeholder}
+          </Card>
+        )
+      }}
+    </Droppable>
   )
 }
 
@@ -130,26 +69,42 @@ const Stories: React.VFC<{
   currentVelocity: number
   stories: StoryFragment[]
 }> = ({ projectId, currentVelocity, stories }) => {
-  const currentStories = stories.filter(
-    (it) => it.orderPriority.position === 'CURRENT' && !it.isDeleted
-  )
-  const backlogStories = stories.filter(
-    (it) => it.orderPriority.position === 'BACKLOG' && !it.isDeleted
-  )
-
-  const iceboxStories = stories.filter(
-    (it) => it.orderPriority.position === 'ICEBOX' && !it.isDeleted
-  )
+  const { currentStories, backlogStories, iceboxStories, handleDragEnd } =
+    useMovableStoryList(stories)
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">
-      <DoneCard projectId={projectId} />
-      <CurrentCard
-        projectId={projectId}
-        currentVelocity={currentVelocity}
-        stories={currentStories}
-      />
-      <BacklogCard projectId={projectId} stories={backlogStories} />
-      <IceboxCard projectId={projectId} stories={iceboxStories} />
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <StoryCard
+          title="Done"
+          position="DONE"
+          projectId={projectId}
+          stories={[]}
+        />
+        <StoryCard
+          title="Current Iteration"
+          position="CURRENT"
+          projectId={projectId}
+          stories={currentStories}
+          headerChildren={
+            <>
+              <Icon as={BsSpeedometer} color="white" />
+              <Text color="white"> {currentVelocity}</Text>
+            </>
+          }
+        />
+        <StoryCard
+          title="Backlog"
+          position="BACKLOG"
+          projectId={projectId}
+          stories={backlogStories}
+        />
+        <StoryCard
+          title="Icebox"
+          position="ICEBOX"
+          projectId={projectId}
+          stories={iceboxStories}
+        />
+      </DragDropContext>
     </HStack>
   )
 }
