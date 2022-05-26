@@ -22,6 +22,7 @@ import {
 } from '@redwoodjs/forms'
 import { VFC } from 'react'
 import { EditStoryFragment, StoryInput } from 'types/graphql'
+import ProjectMemberSelectCell from 'src/components/@shared/ProjectMemberSelectCell'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -113,12 +114,10 @@ const StoryForm: VFC<{
             <SelectField
               id="story-state-0"
               name="state"
-              defaultValue=""
-              defaultChecked={props.story?.state?.includes('UNSTARTED')}
+              defaultValue={props.story?.state ?? 'UNSTARTED'}
               className="rw-input"
               errorClassName="rw-input rw-input-error"
             >
-              <option value="">Select a state</option>
               <option value="UNSTARTED">UNSTARTED</option>
               <option value="STARTED">STARTED</option>
               <option value="FINISHED">FINISHED</option>
@@ -141,8 +140,7 @@ const StoryForm: VFC<{
             <SelectField
               id="story-type-0"
               name="kind"
-              defaultValue="FEATURE"
-              defaultChecked={props.story?.kind?.includes('FEATURE')}
+              defaultValue={props.story?.kind ?? 'FEATURE'}
               className="rw-input"
               errorClassName="rw-input rw-input-error"
             >
@@ -201,11 +199,12 @@ const StoryForm: VFC<{
               REQUESTER
             </Label>
 
-            <TextField
-              name="requesterId"
-              defaultValue={props.story?.requesterId}
-              className="rw-input"
-              errorClassName="rw-input rw-input-error"
+            <ProjectMemberSelectCell
+              projectId={props.story.projectId}
+              componentProps={{
+                name: 'requesterId',
+                defaultValue: props.story?.requesterId,
+              }}
             />
 
             <FieldError name="requesterId" className="rw-field-error" />

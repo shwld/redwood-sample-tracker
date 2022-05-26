@@ -10,7 +10,7 @@ export const schema = gql`
     projectId: String
     releaseDate: DateTime
     project: Project
-    owners: [User]!
+    owners: [Member]!
     orderPriority: StoryOrderPriority
     labels: [Label]!
     activities: [StoryActivity]!

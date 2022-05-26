@@ -4,15 +4,13 @@ import {
   List,
   ListItem,
   ListIcon,
-  Button,
   useColorModeValue,
   HStack,
-  Icon,
   IconButton,
   BoxProps,
   forwardRef,
 } from '@chakra-ui/react'
-import { CloseIcon, AddIcon } from '@chakra-ui/icons'
+import { CloseIcon } from '@chakra-ui/icons'
 import { ComponentProps, ReactNode } from 'react'
 
 export const Head: React.VFC<

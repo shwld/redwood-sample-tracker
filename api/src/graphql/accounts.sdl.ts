@@ -2,7 +2,7 @@ export const schema = gql`
   type Account {
     id: String!
     name: String!
-    members: [User]!
+    members: [Member]!
     createdAt: DateTime!
     updatedAt: DateTime!
   }

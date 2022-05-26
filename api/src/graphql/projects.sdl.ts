@@ -6,7 +6,7 @@ export const schema = gql`
     description: String!
     accountId: String!
     account: Account!
-    members: [User]!
+    members: [Member]!
     currentVelocity: Int!
     createdAt: DateTime!
     updatedAt: DateTime!

@@ -4,7 +4,7 @@ export const schema = gql`
     storyId: String!
     story: Story!
     userId: String!
-    user: User!
+    user: Member!
     content: String!
     createdAt: DateTime!
     updatedAt: DateTime!

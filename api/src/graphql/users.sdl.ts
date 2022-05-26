@@ -3,7 +3,7 @@ export const schema = gql`
     id: String!
     email: String!
     name: String!
-    avatarImageUrl: String!
+    avatarImageUrl: String
     accounts: [Account]!
     createdAt: DateTime!
     updatedAt: DateTime!
