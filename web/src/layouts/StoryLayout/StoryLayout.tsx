@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react'
 import {
   IconButton,
   Box,
-  CloseButton,
   Flex,
   Icon,
   useColorModeValue,
@@ -13,17 +12,9 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  VStack,
-  HStack,
 } from '@chakra-ui/react'
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-} from 'react-icons/fi'
+import { FiMenu, FiList, FiCheck } from 'react-icons/fi'
+import { FcIdea } from 'react-icons/fc'
 import { IconType } from 'react-icons'
 import { ReactText } from 'react'
 import RedwoodLink from '@redwoodjs/router'
@@ -53,18 +44,6 @@ const NavLink = ({ children, to }: { children: ReactNode; to: string }) => (
     {children}
   </Link>
 )
-
-interface LinkItemProps {
-  name: string
-  icon: IconType
-}
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
-]
 
 function SimpleSidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -111,11 +90,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       h="full"
       {...rest}
     >
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
-      ))}
+      <NavItem icon={FiList}>Current Itelation</NavItem>
+      <NavItem icon={FiList}>Backlog</NavItem>
+      <NavItem icon={FcIdea}>Icebox</NavItem>
+      <NavItem icon={FiCheck}>Done</NavItem>
     </Box>
   )
 }
@@ -133,13 +111,12 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
     >
       <Flex
         align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
+        px="3"
+        py="2"
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'cyan.200',
           color: 'white',
         }}
         {...rest}
