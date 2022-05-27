@@ -11465,6 +11465,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "dayjs@npm:1.11.2"
+  checksum: 90bc4605d1733ac0f90faa11255ef862322ce94795ee256aa56007df000f6225e4031afdb6c764c791ed303c433f88832a7572c461fd53fb0ad5cd334a46c866
+  languageName: node
+  linkType: hard
+
 "debounce@npm:^1.2.0":
   version: 1.2.1
   resolution: "debounce@npm:1.2.1"
@@ -22176,6 +22183,7 @@ __metadata:
     "@chakra-ui/icons": ^2.0.0
     "@redwoodjs/core": 1.4.1
     "@types/react-beautiful-dnd": ^13.1.2
+    dayjs: ^1.11.2
     react-beautiful-dnd: ^13.1.0
     react-icons: ^4.3.1
   languageName: unknown

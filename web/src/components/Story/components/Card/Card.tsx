@@ -10,7 +10,7 @@ import {
   BoxProps,
   forwardRef,
 } from '@chakra-ui/react'
-import { CloseIcon } from '@chakra-ui/icons'
+import { CalendarIcon, CloseIcon } from '@chakra-ui/icons'
 import { ComponentProps, ReactNode } from 'react'
 
 export const Head: React.VFC<

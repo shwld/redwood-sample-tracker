@@ -78,12 +78,12 @@ export function useMovableStoryList(stories: StoryFragment[]) {
 
     if (sourceItem == null) return
 
-    console.log({
-      source,
-      sourceItem,
-      destination,
-      destinationItem,
-    })
+    // console.log({
+    //   source,
+    //   sourceItem,
+    //   destination,
+    //   destinationItem,
+    // })
 
     move({
       variables: {
@@ -101,5 +101,13 @@ export function useMovableStoryList(stories: StoryFragment[]) {
     backlogStories: filterStories(stories, 'BACKLOG'),
     iceboxStories: filterStories(stories, 'ICEBOX'),
     handleDragEnd,
+  }
+}
+
+export const useIterationSchedules = (iterationLengthInWeeks: number) => {
+  const [currentIterationStartDate] = useState()
+
+  return {
+    currentIterationStartDate,
   }
 }

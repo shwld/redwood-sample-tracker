@@ -8,13 +8,14 @@ import StoryItem from '../components/StoryItem/StoryItem'
 import { BsSpeedometer } from 'react-icons/bs'
 import { useMovableStoryList, useNewStoryForm } from './hooks'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { PeriodicAggregationContainer } from '../components/PeriodicAggregationContainer/PeriodicAggregationContainer'
 
 const nextPriority = (stories: StoryFragment[]): number => {
   if (stories.length === 0) return 0
   return stories[0].orderPriority.priority + 1
 }
 
-const StoryCard: React.VFC<{
+const ActiveStoryCard: React.VFC<{
   title: string
   projectId: string
   stories: StoryFragment[]
@@ -29,9 +30,9 @@ const StoryCard: React.VFC<{
           <Card ref={provided.innerRef} {...provided.droppableProps}>
             <Head title={title}>
               {headerChildren}
-              {position !== 'DONE' && <StoryAddButton onClick={openForm} />}
+              <StoryAddButton onClick={openForm} />
             </Head>
-            {position !== 'DONE' && formOpened && (
+            {formOpened && (
               <NewStory
                 destination={{
                   position,
@@ -42,8 +43,11 @@ const StoryCard: React.VFC<{
                 onComplete={closeForm}
               />
             )}
-            {stories.map((story, index) => {
-              return (
+            <PeriodicAggregationContainer
+              currentVelocity={10}
+              startDate={new Date()}
+              stories={stories}
+              renderStoryItem={(story, index) => (
                 <Draggable key={story.id} draggableId={story.id} index={index}>
                   {(provided, _snapshot) => (
                     <StoryItem
@@ -54,8 +58,41 @@ const StoryCard: React.VFC<{
                     />
                   )}
                 </Draggable>
-              )
-            })}
+              )}
+            />
+            {provided.placeholder}
+          </Card>
+        )
+      }}
+    </Droppable>
+  )
+}
+
+const StoryCard: React.VFC<{
+  title: string
+  stories: StoryFragment[]
+  position?: StoryPosition
+  headerChildren?: ReactNode
+}> = ({ title, position, stories, headerChildren }) => {
+  return (
+    <Droppable droppableId={position}>
+      {(provided, _snapshot) => {
+        return (
+          <Card ref={provided.innerRef} {...provided.droppableProps}>
+            <Head title={title}>{headerChildren}</Head>
+
+            {stories.map((story, index) => (
+              <Draggable key={story.id} draggableId={story.id} index={index}>
+                {(provided, _snapshot) => (
+                  <StoryItem
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    story={story}
+                  />
+                )}
+              </Draggable>
+            ))}
             {provided.placeholder}
           </Card>
         )
@@ -74,13 +111,8 @@ const Stories: React.VFC<{
   return (
     <HStack align="stretch" h="calc(100vh - 5rem)">
       <DragDropContext onDragEnd={handleDragEnd}>
-        <StoryCard
-          title="Done"
-          position="DONE"
-          projectId={projectId}
-          stories={[]}
-        />
-        <StoryCard
+        <StoryCard title="Done" position="DONE" stories={[]} />
+        <ActiveStoryCard
           title="Current Iteration"
           position="CURRENT"
           projectId={projectId}
@@ -92,18 +124,13 @@ const Stories: React.VFC<{
             </>
           }
         />
-        <StoryCard
+        <ActiveStoryCard
           title="Backlog"
           position="BACKLOG"
           projectId={projectId}
           stories={backlogStories}
         />
-        <StoryCard
-          title="Icebox"
-          position="ICEBOX"
-          projectId={projectId}
-          stories={iceboxStories}
-        />
+        <StoryCard title="Icebox" position="ICEBOX" stories={iceboxStories} />
       </DragDropContext>
     </HStack>
   )
