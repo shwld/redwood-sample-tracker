@@ -7,6 +7,7 @@
 services:
 - name: redwood-sample-tracker-web
   type: web
+  plan: free
   env: static
   buildCommand: yarn rw deploy render web
   staticPublishPath: ./web/dist
@@ -28,6 +29,7 @@ services:
 
 - name: redwood-sample-tracker-api
   type: web
+  plan: free
   env: node
   region: oregon
   buildCommand: yarn && yarn rw build api
@@ -43,4 +45,5 @@ services:
 databases:
   - name: redwood-sample-tracker-db
     region: oregon
+    plan: free
 
