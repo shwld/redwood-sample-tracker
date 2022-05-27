@@ -19,6 +19,10 @@ export const QUERY = gql`
       createdAt
       updatedAt
     }
+    accounts {
+      id
+      name
+    }
   }
 `
 const UPDATE_PROJECT_MUTATION = gql`
@@ -42,7 +46,10 @@ export const Failure = ({ error }: CellFailureProps) => (
   <div className="rw-cell-error">{error.message}</div>
 )
 
-export const Success = ({ project }: CellSuccessProps<EditProjectById>) => {
+export const Success = ({
+  project,
+  accounts,
+}: CellSuccessProps<EditProjectById>) => {
   const [updateProject, { loading, error }] = useMutation(
     UPDATE_PROJECT_MUTATION,
     {
@@ -70,6 +77,7 @@ export const Success = ({ project }: CellSuccessProps<EditProjectById>) => {
       <div className="rw-segment-main">
         <ProjectForm
           project={project}
+          accounts={accounts}
           onSave={onSave}
           error={error}
           loading={loading}

@@ -13,7 +13,10 @@ import { VFC } from 'react'
 import type { Project } from 'types/graphql'
 
 const ProjectForm: VFC<{
-  project?: Project
+  project?: Pick<
+    Project,
+    'id' | 'name' | 'privacy' | 'description' | 'accountId' | 'currentVelocity'
+  >
   accounts: Array<{ id: string; name: string }>
   error?: any
   loading?: boolean

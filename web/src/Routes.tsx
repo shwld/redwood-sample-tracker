@@ -8,7 +8,7 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Set, Router, Route, Private } from '@redwoodjs/router'
-import ProjectLayout from './layouts/ProjectLayout/ProjectLayout'
+import AppLayout from './layouts/AppLayout/AppLayout'
 import StoryLayout from 'src/layouts/StoryLayout/StoryLayout'
 
 const Routes = () => {
@@ -17,7 +17,7 @@ const Routes = () => {
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/signup" page={SignupPage} name="signup" />
       <Route path="/" page={HomePage} name="home" />
-      <Private unauthenticated="login">
+      <Private wrap={AppLayout} unauthenticated="login">
         <Route path="/projects/new" page={ProjectNewProjectPage} name="newProject" />
         <Route path="/projects/{id}/edit" page={ProjectEditProjectPage} name="editProject" />
         <Route path="/projects/{id}" page={ProjectProjectPage} name="project" />
@@ -27,10 +27,8 @@ const Routes = () => {
         <Route path="/accounts/{id}" page={AccountAccountPage} name="account" />
         <Route path="/accounts" page={AccountAccountsPage} name="accounts" />
 
-        <Set wrap={ProjectLayout}>
-          <Set wrap={StoryLayout}>
-            <Route path="/projects/{id}/stories" page={StoriesPage} name="stories" />
-          </Set>
+        <Set wrap={StoryLayout}>
+          <Route path="/projects/{id}/stories" page={StoriesPage} name="stories" />
         </Set>
 
         <Route path="/forgot-password" page={ForgotPasswordPage} name="forgotPassword" />

@@ -9,14 +9,13 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
   Link,
 } from '@chakra-ui/react'
-import { Link as RedwoodLink, routes, useParams } from '@redwoodjs/router'
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons'
+import { Link as RedwoodLink, routes } from '@redwoodjs/router'
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { ReactNode } from 'react'
 
 type ProjectLayoutProps = {
@@ -24,7 +23,6 @@ type ProjectLayoutProps = {
 }
 
 const ProjectLayout = ({ children }: ProjectLayoutProps) => {
-  const { id } = useParams()
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
     <>
@@ -44,19 +42,11 @@ const ProjectLayout = ({ children }: ProjectLayoutProps) => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              <NavLink to={routes.stories({ id })}>STORIES</NavLink>
+              <NavLink to={routes.accounts()}>ACCOUNTS</NavLink>
+              <NavLink to={routes.projects()}>PROJECTS</NavLink>
             </HStack>
           </HStack>
           <Flex alignItems={'center'}>
-            <Button
-              variant={'solid'}
-              colorScheme={'teal'}
-              size={'sm'}
-              mr={4}
-              leftIcon={<AddIcon />}
-            >
-              Action
-            </Button>
             <Menu>
               <MenuButton
                 as={Button}
@@ -73,10 +63,12 @@ const ProjectLayout = ({ children }: ProjectLayoutProps) => {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
+                <MenuItem>
+                  <NavLink to="/accounts">Accounts</NavLink>{' '}
+                </MenuItem>
+                <MenuItem>
+                  <NavLink to="/accounts">Projects</NavLink>{' '}
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -84,9 +76,7 @@ const ProjectLayout = ({ children }: ProjectLayoutProps) => {
 
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
-              <NavLink to={routes.stories({ id })}>STORIES</NavLink>
-            </Stack>
+            <Stack as={'nav'} spacing={4}></Stack>
           </Box>
         ) : null}
       </Box>
@@ -102,7 +92,7 @@ const NavLink = ({ children, to }: { children: ReactNode; to: string }) => (
   <Link
     px={2}
     py={1}
-    rounded={'md'}
+    w="full"
     _hover={{
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),

@@ -79,36 +79,36 @@ const ProjectsList = ({ projects }) => {
       <table className="rw-table">
         <thead>
           <tr>
-            <th>Id</th>
+            {/* <th>Id</th> */}
             <th>Name</th>
             <th>Privacy</th>
             <th>Description</th>
-            <th>Account id</th>
+            {/* <th>Account id</th> */}
             <th>Current verocity</th>
-            <th>Created at</th>
-            <th>Updated at</th>
+            {/* <th>Created at</th> */}
+            {/* <th>Updated at</th> */}
             <th>&nbsp;</th>
           </tr>
         </thead>
         <tbody>
           {projects.map((project) => (
             <tr key={project.id}>
-              <td>{truncate(project.id)}</td>
+              {/* <td>{truncate(project.id)}</td> */}
               <td>{truncate(project.name)}</td>
               <td>{formatEnum(project.privacy)}</td>
               <td>{truncate(project.description)}</td>
-              <td>{truncate(project.accountId)}</td>
+              {/* <td>{truncate(project.accountId)}</td> */}
               <td>{truncate(project.currentVelocity)}</td>
-              <td>{timeTag(project.createdAt)}</td>
-              <td>{timeTag(project.updatedAt)}</td>
+              {/* <td>{timeTag(project.createdAt)}</td> */}
+              {/* <td>{timeTag(project.updatedAt)}</td> */}
               <td>
                 <nav className="rw-table-actions">
                   <Link
-                    to={routes.project({ id: project.id })}
+                    to={routes.stories({ id: project.id })}
                     title={'Show project ' + project.id + ' detail'}
                     className="rw-button rw-button-small"
                   >
-                    Show
+                    Go
                   </Link>
                   <Link
                     to={routes.editProject({ id: project.id })}
