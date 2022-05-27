@@ -1,5 +1,5 @@
 import * as storyRepository from 'src/domain/repositories/stories/stories'
-import { db } from 'src/lib/db'
+import storySpecification from 'src/domain/specifications/story/storySpecification'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -81,14 +81,11 @@ export const deleteStory: MutationResolvers['deleteStory'] = async ({ id }) => {
 }
 
 export const Story: StoryResolvers = {
+  isUnEstimated: (_obj, { root }) => storySpecification.isUnEstimated(root),
   orderPriority: (_obj, { root }) =>
-    db.story.findUnique({ where: { id: root.id } }).storyOrderPriority(),
-  project: (_obj, { root }) =>
-    db.story.findUnique({ where: { id: root.id } }).project(),
-  owners: (_obj, { root }) =>
-    db.story.findUnique({ where: { id: root.id } }).owners(),
-  labels: (_obj, { root }) =>
-    db.story.findUnique({ where: { id: root.id } }).labels(),
-  activities: (_obj, { root }) =>
-    db.story.findUnique({ where: { id: root.id } }).activities(),
+    storyRepository.getRelationOrderPriority(root),
+  project: (_obj, { root }) => storyRepository.getRelationProject(root),
+  // owners: (_obj, { root }) => storyRepository.getRelationOwners(root),
+  labels: (_obj, { root }) => storyRepository.getRelationLabels(root),
+  activities: (_obj, { root }) => storyRepository.getRelationActivities(root),
 }

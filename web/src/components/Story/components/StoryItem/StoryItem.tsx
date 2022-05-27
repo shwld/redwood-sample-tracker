@@ -1,6 +1,8 @@
 import { StarIcon } from '@chakra-ui/icons'
 import {
   Badge,
+  Button,
+  ButtonGroup,
   Checkbox,
   forwardRef,
   HStack,
@@ -9,9 +11,23 @@ import {
   ListItemProps,
   Text,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useState, VFC } from 'react'
 import { StoryFragment } from 'types/graphql'
 import StoryCell from '../../StoryCell'
+
+const EstimateSelector: VFC = () => {
+  return (
+    <HStack>
+      <ButtonGroup size="xs" isAttached variant="ghost">
+        <Button>1</Button>
+        <Button>3</Button>
+        <Button>8</Button>
+        <Button>20</Button>
+        <Button>40</Button>
+      </ButtonGroup>
+    </HStack>
+  )
+}
 
 const StoryItem = forwardRef<ListItemProps & { story: StoryFragment }, 'li'>(
   ({ story, ...props }, ref) => {
@@ -32,13 +48,15 @@ const StoryItem = forwardRef<ListItemProps & { story: StoryFragment }, 'li'>(
               <HStack>
                 <ListIcon as={StarIcon} color="green.400" />
                 <Text fontSize="sm" color="gray.400" w={5}>
-                  {/*story.points*/}
-                  {story.orderPriority.priority}
+                  {story.points}
                 </Text>
                 <Text fontSize="md">{story.title}</Text>
               </HStack>
-              <Badge>{story.state}</Badge>
-              <Checkbox />
+              <HStack justify="flex-end">
+                {story.isUnEstimated && <EstimateSelector />}
+                {!story.isUnEstimated && <Badge>{story.state}</Badge>}
+                <Checkbox />
+              </HStack>
             </HStack>
           </ListItem>
         )}

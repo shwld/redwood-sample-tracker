@@ -180,12 +180,23 @@ const StoryForm: VFC<{
               POINTS
             </Label>
 
-            <NumberField
+            <SelectField
               name="points"
               defaultValue={props.story?.points}
               className="rw-input"
               errorClassName="rw-input rw-input-error"
-            />
+              validation={{ valueAsNumber: true }}
+            >
+              <option value={null}>Unestimated</option>
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={5}>5</option>
+              <option value={8}>8</option>
+              <option value={13}>13</option>
+              <option value={20}>20</option>
+              <option value={40}>40</option>
+            </SelectField>
 
             <FieldError name="points" className="rw-field-error" />
           </HStack>

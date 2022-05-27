@@ -18,6 +18,7 @@ export const schema = gql`
     updatedAt: DateTime!
 
     isDeleted: Boolean
+    isUnEstimated: Boolean!
   }
 
   type StoryOrderPriority {

@@ -14,6 +14,7 @@ export const QUERY = gql`
     }
     points
     isDeleted
+    isUnEstimated
     orderPriority {
       priority
     }

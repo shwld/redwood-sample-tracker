@@ -46,6 +46,8 @@ const UPDATE_STORY_MUTATION = gql`
       }
       createdAt
       updatedAt
+
+      isUnEstimated
     }
   }
 `

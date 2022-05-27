@@ -60,6 +60,7 @@ const NewStory: React.VFC<{
     update(cache, result) {
       const story = {
         isDeleted: false,
+        isUnEstimated: false,
         ...result.data.createStory,
       }
       const data = cache.readQuery<StoriesQuery, StoriesQueryVariables>({

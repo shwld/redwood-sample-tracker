@@ -6,7 +6,5 @@ export const schema = gql`
     email: String!
     name: String!
     avatarImageUrl: String
-    createdAt: DateTime!
-    updatedAt: DateTime!
   }
 `
