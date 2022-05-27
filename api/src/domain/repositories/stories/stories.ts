@@ -1,6 +1,5 @@
 import { db } from 'src/lib/db'
 import {
-  PrismaPromise,
   Prisma,
   Story,
   StoryOrderPriority,
@@ -17,7 +16,7 @@ export function storiesOfUserProject(
     Prisma.Subset<{}, Prisma.StoryFindManyArgs>,
     'where' | 'include'
   >
-): PrismaPromise<Story[]> {
+): Promise<StoryAndPosition[]> {
   return db.story.findMany({
     where: {
       project: {
@@ -41,7 +40,7 @@ export function storiesOfUserProject(
 export function storyOfUser(args: {
   userId: string
   id: string
-}): PrismaPromise<Story> {
+}): Promise<StoryAndPosition> {
   return db.story.findFirst({
     where: {
       id: args.id,
@@ -125,7 +124,7 @@ export async function updateStory(args: {
 export async function deleteStory(args: {
   id: string
   userId: string
-}): Promise<Story | undefined> {
+}): Promise<StoryAndPosition | undefined> {
   const story = await storyOfUser({ userId: args.userId, id: args.id })
   if (story == null) return
 
@@ -143,88 +142,6 @@ export async function deleteStory(args: {
 
 type StoryAndPosition = Story & {
   storyOrderPriority: StoryOrderPriority
-}
-
-// 移動元ストーリーのpriority分詰める
-async function closePriority(args: {
-  projectId: string
-  sourceStories: Array<StoryAndPosition>
-  sourcePosition: StoryPosition
-}): Promise<StoryOrderPriority[]> {
-  const sources = args.sourceStories.filter(
-    (it) => it.storyOrderPriority.position === args.sourcePosition
-  )
-  if (sources.length === 0) return []
-
-  const maximumPriority = Math.max(
-    ...args.sourceStories.map((it) => it.storyOrderPriority.priority)
-  )
-  const targetItems = await db.storyOrderPriority.findMany({
-    where: {
-      projectId: args.projectId,
-      storyId: {
-        notIn: sources.map((it) => it.id),
-      },
-      priority: {
-        gt: maximumPriority,
-      },
-      position: args.sourcePosition,
-    },
-  })
-  await db.storyOrderPriority.updateMany({
-    where: {
-      projectId: args.projectId,
-      storyId: {
-        in: targetItems.map((it) => it.storyId),
-      },
-      position: args.sourcePosition,
-    },
-    data: {
-      priority: {
-        decrement: sources.length,
-      },
-    },
-  })
-  return targetItems
-}
-
-async function shiftPriority(args: {
-  projectId: string
-  sourceStories: Array<StoryAndPosition>
-  destination: { position: StoryPosition; priority: number }
-}): Promise<StoryOrderPriority[]> {
-  if (args.sourceStories.length === 0) return []
-
-  const destinations = args.sourceStories.filter(
-    (it) => it.storyOrderPriority.position === args.destination.position
-  )
-  const targetItems = await db.storyOrderPriority.findMany({
-    where: {
-      projectId: args.projectId,
-      storyId: {
-        notIn: destinations.map((it) => it.id),
-      },
-      priority: {
-        gte: args.destination.priority,
-      },
-      position: args.destination.position,
-    },
-  })
-  await db.storyOrderPriority.updateMany({
-    where: {
-      projectId: args.projectId,
-      storyId: {
-        in: targetItems.map((it) => it.storyId),
-      },
-      position: args.destination.position,
-    },
-    data: {
-      priority: {
-        increment: args.sourceStories.length,
-      },
-    },
-  })
-  return targetItems
 }
 
 export async function reorderStories(args: {
@@ -312,4 +229,101 @@ export async function reorderStories(args: {
       storyOrderPriority: true,
     },
   })
+}
+
+export const getRelationOrderPriority = (story: Story) =>
+  db.story.findUnique({ where: { id: story.id } }).storyOrderPriority()
+export const getRelationProject = (story: Story) =>
+  db.story.findUnique({ where: { id: story.id } }).project()
+export const getRelationOwners = (story: Story) =>
+  db.story.findUnique({ where: { id: story.id } }).owners()
+export const getRelationLabels = (story: Story) =>
+  db.story.findUnique({ where: { id: story.id } }).labels()
+export const getRelationActivities = (story: Story) =>
+  db.story.findUnique({ where: { id: story.id } }).activities()
+
+/**
+ * PRIVATE ---------------------------------------------
+ */
+
+// 移動元ストーリーのpriority分詰める
+async function closePriority(args: {
+  projectId: string
+  sourceStories: Array<StoryAndPosition>
+  sourcePosition: StoryPosition
+}): Promise<StoryOrderPriority[]> {
+  const sources = args.sourceStories.filter(
+    (it) => it.storyOrderPriority.position === args.sourcePosition
+  )
+  if (sources.length === 0) return []
+
+  const maximumPriority = Math.max(
+    ...args.sourceStories.map((it) => it.storyOrderPriority.priority)
+  )
+  const targetItems = await db.storyOrderPriority.findMany({
+    where: {
+      projectId: args.projectId,
+      storyId: {
+        notIn: sources.map((it) => it.id),
+      },
+      priority: {
+        gt: maximumPriority,
+      },
+      position: args.sourcePosition,
+    },
+  })
+  await db.storyOrderPriority.updateMany({
+    where: {
+      projectId: args.projectId,
+      storyId: {
+        in: targetItems.map((it) => it.storyId),
+      },
+      position: args.sourcePosition,
+    },
+    data: {
+      priority: {
+        decrement: sources.length,
+      },
+    },
+  })
+  return targetItems
+}
+
+async function shiftPriority(args: {
+  projectId: string
+  sourceStories: Array<StoryAndPosition>
+  destination: { position: StoryPosition; priority: number }
+}): Promise<StoryOrderPriority[]> {
+  if (args.sourceStories.length === 0) return []
+
+  const destinations = args.sourceStories.filter(
+    (it) => it.storyOrderPriority.position === args.destination.position
+  )
+  const targetItems = await db.storyOrderPriority.findMany({
+    where: {
+      projectId: args.projectId,
+      storyId: {
+        notIn: destinations.map((it) => it.id),
+      },
+      priority: {
+        gte: args.destination.priority,
+      },
+      position: args.destination.position,
+    },
+  })
+  await db.storyOrderPriority.updateMany({
+    where: {
+      projectId: args.projectId,
+      storyId: {
+        in: targetItems.map((it) => it.storyId),
+      },
+      position: args.destination.position,
+    },
+    data: {
+      priority: {
+        increment: args.sourceStories.length,
+      },
+    },
+  })
+  return targetItems
 }
