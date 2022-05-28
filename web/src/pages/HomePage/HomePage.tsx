@@ -6,7 +6,6 @@ import {
   Heading,
   Stack,
   Text,
-  Button,
   Icon,
   IconProps,
 } from '@chakra-ui/react'
@@ -27,15 +26,16 @@ const HomePage = () => {
             fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
             lineHeight={'110%'}
           >
-            Meeting scheduling{' '}
-            <Text as={'span'} color={'orange.400'}>
-              made easy
-            </Text>
+            This is is changing how teams build software
           </Heading>
           <Text color={'gray.500'} maxW={'3xl'}>
-            Never miss a meeting. Never be late for one too. Keep track of your
-            meetings and receive smart reminders in appropriate times. Read your
-            smart “Daily Agenda” every morning.
+            We are uncovering better ways of developing software by doing it and
+            helping others do it. Through this work we have come to value:
+            Individuals and interactions over processes and tools Working
+            software over comprehensive documentation Customer collaboration
+            over contract negotiation Responding to change over following a plan
+            That is, while there is value in the items on the right, we value
+            the items on the left more.
           </Text>
           <Stack spacing={6} direction={'row'}>
             <Link to={routes.projects()}>Get started</Link>
