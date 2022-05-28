@@ -14,7 +14,6 @@ import {
   FieldError,
   Label,
   TextField,
-  NumberField,
   DatetimeLocalField,
   Submit,
   SelectField,
@@ -31,6 +30,7 @@ const formatDatetime = (value) => {
 }
 
 const StoryForm: VFC<{
+  projectId: string
   story?: EditStoryFragment
   loading: boolean
   error: any
@@ -211,7 +211,7 @@ const StoryForm: VFC<{
             </Label>
 
             <ProjectMemberSelectCell
-              projectId={props.story.projectId}
+              projectId={props.projectId}
               componentProps={{
                 name: 'requesterId',
                 defaultValue: props.story?.requesterId,

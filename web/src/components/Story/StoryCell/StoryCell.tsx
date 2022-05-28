@@ -102,6 +102,7 @@ export const Success = ({
   }
   return (
     <StoryForm
+      projectId={story.projectId}
       story={story}
       onSave={onSave}
       loading={loading || deleteResult.loading}

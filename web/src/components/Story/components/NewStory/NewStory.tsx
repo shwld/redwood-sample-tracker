@@ -105,6 +105,7 @@ const NewStory: React.VFC<{
 
   return (
     <StoryForm
+      projectId={projectId}
       onSave={onSave}
       loading={loading}
       error={error}
