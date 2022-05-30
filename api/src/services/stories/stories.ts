@@ -1,4 +1,4 @@
-import * as storyRepository from 'src/domain/repositories/stories/stories'
+import * as storyRepository from 'src/repositories/stories/stories'
 import storySpecification from 'src/domain/specifications/story/storySpecification'
 import type {
   QueryResolvers,
