@@ -14,3 +14,5 @@
   port = 8911
 [browser]
   open = true
+[build]
+  command = "NODE_ENV=production yarn rw db up --no-db-client --auto-approve && yarn rw build && yarn workspace core-domain build"

@@ -1,0 +1,24 @@
+{
+  "name": "core-domain",
+  "version": "0.0.0",
+  "type": "commonjs",
+  "main": "./dist/cjs/specifications.js",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "yarn build:cjs",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:watch": "nodemon --watch src --ext \"js,ts,tsx\" --ignore dist --exec \"yarn build\""
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.4",
+    "nodemon": "^2.0.18",
+    "tsc": "^2.0.4",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "immer": "^9.0.15",
+    "uuid": "^8.3.2",
+    "zod": "^3.17.3"
+  }
+}

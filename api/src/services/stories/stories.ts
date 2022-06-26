@@ -1,10 +1,11 @@
-import * as storyRepository from 'src/repositories/stories/stories'
-import storySpecification from 'src/domain/specifications/story/storySpecification'
+import { Story as storyDomain } from 'core-domain'
 import type {
   QueryResolvers,
   MutationResolvers,
   StoryResolvers,
 } from 'types/graphql'
+
+import * as storyRepository from 'src/repositories/stories/stories'
 
 export const stories: QueryResolvers['stories'] = ({ projectId }) => {
   return storyRepository.storiesOfUserProject(
@@ -81,7 +82,7 @@ export const deleteStory: MutationResolvers['deleteStory'] = async ({ id }) => {
 }
 
 export const Story: StoryResolvers = {
-  isUnEstimated: (_obj, { root }) => storySpecification.isUnEstimated(root),
+  isUnEstimated: (_obj, { root }) => storyDomain.isUnEstimated(root),
   orderPriority: (_obj, { root }) =>
     storyRepository.getRelationOrderPriority(root),
   project: (_obj, { root }) => storyRepository.getRelationProject(root),
